@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Emojis AI</title>
+    <link rel="icon" href="../images/favicon.png" type="image/png">
+    
+    <!-- 外部样式 -->
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <link rel="stylesheet" href="../fontawesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- 自定义样式 -->
+    <style>
+        body {
+            background: var(--background-body);
+            font-family: var(--font-text);
+            color: var(--color-white);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #000;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 导航栏样式 */
+        .header {
+            position: fixed;
+            top: 0;
+            height: 80px;
+            width: 100%;
+            z-index: 999;
+            background-color: transparent;
+            transition: background-color 0.3s ease, height 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000000d9;
+        }
+
+        .nav-container {
+            width: 100%;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            height: 36px;
+        }
+
+        .logo img {
+            height: 36px;
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 40px;
+        }
+
+        .nav-menu li a {
+            color: var(--color-white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: var(--primary-color);
+        }
+
+        .pro-badge {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 移动端菜单按钮 */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 8px;
+            gap: 4px;
+        }
+
+        .mobile-menu-btn span {
+            width: 20px;
+            height: 2px;
+            background: var(--color-white);
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* 移动端侧边菜单 */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-sidebar.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .mobile-sidebar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .mobile-sidebar-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-sidebar.active .mobile-sidebar-content {
+            transform: translateX(0);
+        }
+
+        .mobile-sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-logo img {
+            height: 36px;
+        }
+
+        .mobile-logo span {
+            color: var(--color-white);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .mobile-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-white);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .mobile-nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mobile-nav-list li {
+            margin-bottom: 8px;
+        }
+
+        .mobile-nav-list a {
+            display: block;
+            padding: 16px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .mobile-nav-list a:hover,
+        .mobile-nav-list a.active {
+            color: var(--primary-color);
+            background: rgba(204, 255, 2, 0.1);
+            border-left-color: var(--primary-color);
+        }
+
+        .mobile-sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-pro-badge {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .pro-icon, .pro-emoji {
+            font-size: 16px;
+        }
+
+        /* 自定义滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+        }
+
+        /* 主要内容区域 */
+        .content {
+            padding-top: 68px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            /* background: url(./assets/bg.png) no-repeat top center / contain; */
+        }
+
+        .gallery-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .gallery-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-white);
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #00ff88 0%, #00ccff 50%, #ccff02 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gallery-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0;
+        }
+
+        /* 分类标签 */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--color-white);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .category-tab.active {
+            border-color: #ccff02;
+            background: rgba(204, 255, 2, 0.1);
+            color: #ccff02;
+        }
+
+        .category-tab:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* 表情包网格 */
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 60px;
+        }
+
+        .emoji-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .emoji-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .emoji-card img {
+            width: 88px;
+            height: 88px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .emoji-card-title {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* 分类区域 */
+        .category-section {
+            margin-bottom: 60px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+            margin: 0;
+        }
+
+        .category-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .user-tag {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-bar {
+            padding: 20px 0;
+        }
+
+        .footer-bar-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .footer-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer__copyright {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .footer__copyright-link {
+            color: #ccff02;
+            text-decoration: none;
+        }
+
+        .footer__copyright-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer__links {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .footer__links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer__links a:hover {
+            color: #ccff02;
+            text-decoration: underline;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .pro-badge {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .gallery-title {
+                font-size: 32px;
+            }
+
+            .category-tabs {
+                gap: 12px;
+            }
+
+            .category-tab {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .emoji-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 12px;
+            }
+
+            .emoji-card img {
+                width: 48px;
+                height: 48px;
+            }
+
+            .footer-bar-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-container {
+                padding: 16px;
+            }
+
+            .emoji-grid {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+                gap: 8px;
+            }
+
+            .emoji-card {
+                padding: 12px;
+            }
+
+            .emoji-card img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 导航栏 -->
+        <header class="header">
+            <div class="nav-container">
+                <a href="../index.html" class="logo">
+                    <img src="./assets/icon-logo.png" alt="" />
+                </a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="./index.html">Create</a></li>
+                        <li><a href="#" class="active">Gallery</a></li>
+                        <li><a href="./price.html">Price</a></li>
+                        <li><a href="./creation.html">Creation</a></li>
+                    </ul>
+                </nav>
+
+                <div class="pro-badge">✨ PRO 😎</div>
+                
+                <!-- 移动端菜单按钮 -->
+                <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 移动端侧边菜单 -->
+        <div class="mobile-sidebar" id="mobileSidebar">
+            <div class="mobile-sidebar-overlay" onclick="closeMobileMenu()"></div>
+            <div class="mobile-sidebar-content">
+                <div class="mobile-sidebar-header">
+                    <div class="mobile-logo">
+                        <img src="./assets/icon-logo.png" alt="Emojis AI" />
+                    </div>
+                    <button class="mobile-close-btn" onclick="closeMobileMenu()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <nav class="mobile-nav">
+                    <ul class="mobile-nav-list">
+                        <li><a href="./index.html">Create</a></li>
+                        <li><a href="#" class="active">Gallery</a></li>
+                        <li><a href="../price.html">Price</a></li>
+                        <li><a href="./creation.html">Creation</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-sidebar-footer">
+                    <div class="mobile-pro-badge">
+                        <span class="pro-icon">✨</span>
+                        <span>PRO Account</span>
+                        <span class="pro-emoji">😎</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容 -->
+        <main class="content">
+            <div class="gallery-container">
+                <!-- 页面标题 -->
+                <div class="gallery-header">
+                    <h1 class="gallery-title">Emoji Gallery</h1>
+                    <p class="gallery-subtitle">Discover amazing emojis created by our community</p>
+                </div>
+
+                <!-- 分类标签 -->
+                <div class="category-tabs">
+                    <button class="category-tab active" onclick="switchCategory('all')">All</button>
+                    <button class="category-tab" onclick="switchCategory('cute')">Cute</button>
+                    <button class="category-tab" onclick="switchCategory('hamsters')">Hamsters</button>
+                    <button class="category-tab" onclick="switchCategory('juul')">Juul</button>
+                    <button class="category-tab" onclick="switchCategory('juultje')">Juultje</button>
+                    <button class="category-tab" onclick="switchCategory('emoji-cat')">Emoji Cat</button>
+                    <button class="category-tab" onclick="switchCategory('memes')">Memes</button>
+                    <button class="category-tab" onclick="switchCategory('cutes')">Cutes</button>
+                </div>
+
+                <!-- Cute 分类 -->
+                <div class="category-section" id="cute-section">
+                    <div class="category-header">
+                        <h2 class="category-name"> Cute </h2>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span>❤️</span>
+                                <span>2467</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>👁️</span>
+                                <span>30</span>
+                            </div>
+                            <div class="user-tag">@Tamara</div>
+                        </div>
+                    </div>
+                    <div class="emoji-grid">
+                        <div class="emoji-card">
+                            <img src="./assets/1316706706830393344_0.webp" alt="cinnamon bun">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316483729459249152_0.webp" alt="yoghurt bowl with grapes and blueberries">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315702116056039424_0.webp" alt="light pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316415010188034048_0.webp" alt="Knife with a pink bow on it">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315701714984108032_0.webp" alt="Huge pink flower bouquet">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1314697632836222976_0.webp" alt="light pink and gold and white gingerbread house">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678500325163008_0.webp" alt="Pink christmas sleigh">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678848423034880_0.webp" alt="Realistic glass cookie jar">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1314697633280819200_0.webp" alt="Pastel gingerbread man">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315696328159789056_0.webp" alt="Pink Christmas tree">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1314697611743068160_0.webp" alt="Gingerbread house with a pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315679935246893056_0.webp" alt="Pink candy cane">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315679935548882944_0.webp" alt="hot chocolate with pink marshmallow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1314697611986337792_0.webp" alt="Snowman with a light pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315691191764779008_0.webp" alt="Pink Christmas snow globe">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315692022799007744_0.webp" alt="Light Pink mug of hot chocolate">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316704361186852864_0.webp" alt="Pink gingerbread house">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316722709161312256_0.webp" alt="light pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316769036549226496_0.webp" alt="Brown cute bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315695567912828928_0.webp" alt="Cinnamon roll">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1321479211654840320_0.webp" alt="happy new 2025 fireworks">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678290471550976_0.webp" alt="Cinnamon roll">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1314697656135581696_0.webp" alt="Starbuck ice coffee with ice cubes">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317057470060822528_0.webp" alt="Fancy coffee">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316050123930730496_0.webp" alt="Iced coffee with cinnamon powder">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316407911957659648_0.webp" alt="UGG slippers">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316342964603060224_0.webp" alt="Light pink Christmas gifts">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315695075220520960_0.webp" alt="A cute teddy bear">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315690337326333952_0.webp" alt="White Chanel perfume">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316043258480033792_0.webp" alt="Chanel bag brown">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- cute 分类 -->
+                <div class="category-section" id="cute2-section">
+                    <div class="category-header">
+                        <h2 class="category-name">cute</h2>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span>❤️</span>
+                                <span>8</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>👁️</span>
+                                <span>8</span>
+                            </div>
+                            <div class="user-tag">@Oscar</div>
+                        </div>
+                    </div>
+                    <div class="emoji-grid">
+                        <div class="emoji-card">
+                            <img src="./assets/1316061468461891584_0.webp" alt="Pink cute pointes">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1324162462018174976_0.webp" alt="cute soft pink bed">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316430977798504448_0.webp" alt="Cute shiny pink diamond">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316434883257565184_0.webp" alt="Cute pink coffee">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316422836956430336_0.webp" alt="Cute Chanel bag">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316347089143201792_0.webp" alt="Cute pink gingerbread">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316776360542208000_0.webp" alt="Cute skeleton w pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317136160874561536_0.webp" alt="Snapchat logo cute and pink">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- hamsters 分类 -->
+                <div class="category-section" id="hamsters-section">
+                    <div class="category-header">
+                        <h2 class="category-name">hamsters</h2>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span>❤️</span>
+                                <span>10</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>👁️</span>
+                                <span>30</span>
+                            </div>
+                            <div class="user-tag">@Oscar</div>
+                        </div>
+                    </div>
+                    <div class="emoji-grid">
+                        <div class="emoji-card">
+                            <img src="./assets/1316399466051272704_0.webp" alt="Hamster with a pink bow on his head">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316735242844766208_0.webp" alt="hamster with pink bow on head">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316425743370027008_0.webp" alt="hamster">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316371331582787584_0.webp" alt="hamster with a gun">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316416687985131520_0.webp" alt="brown hamster cozy in blanket">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315699913836724224_0.webp" alt="hamster ith a rifle">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316054378267803648_0.webp" alt="a hamster with an umbrella">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316466585665273856_0.webp" alt="rainbow hamster">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317081312342835200_0.webp" alt="Hamster laughs">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317082502162022400_0.webp" alt="hamster smoke e-cigarette">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317082783624986624_0.webp" alt="Hamster med rosa hatt">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316743948663783424_0.webp" alt="hamster eating a seed">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678729560653824_0.webp" alt="chubby hamster taking a nap">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315698058897391616_0.webp" alt="Hamster laughing out loud">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315700071068598272_0.webp" alt="Hamster mit einer Blume">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315700464305569792_0.webp" alt="Christmas hamster">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315700560871030784_0.webp" alt="hamster eating pizza">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315700560942333952_0.webp" alt="Hamster eating popcorn">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315700561416290304_0.webp" alt="hamster eating waffle">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316046718298488832_0.webp" alt="hamster working on laptop">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316055227564032000_0.webp" alt="hamster with a sunhat drinking a coctail">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316062784575766528_0.webp" alt="hamster with gun">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316349894276939776_0.webp" alt="A hamster with glasses">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316355548437807104_0.webp" alt="Hamster with a Champagner Glas">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316380891735392256_0.webp" alt="Hamster eating chicken nuggeta">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316382452188446720_0.webp" alt="Hamster mascot genshin inmpact">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316382452385579008_0.webp" alt="Hamster mascot Warcraft">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316382452565934080_0.webp" alt="hamster playing games on console">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316382452641431552_0.webp" alt="hamster playing games">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316397144340430848_0.webp" alt="Hamster drinking coffee">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- juul 分类 -->
+                <div class="category-section" id="juul-section">
+                    <div class="category-header">
+                        <h2 class="category-name">juul</h2>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span>❤️</span>
+                                <span>199</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>👁️</span>
+                                <span>30</span>
+                            </div>
+                            <div class="user-tag">@Oscar</div>
+                        </div>
+                    </div>
+                    <div class="emoji-grid">
+                        <div class="emoji-card">
+                            <img src="./assets/1316767523001073664_0.webp" alt="Cinnamon rolls, soft pink, bows">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1363809687157342208_0.webp" alt="cat with pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1322899263541215232_0.webp" alt="black dogs">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316736929990967296_0.webp" alt="two australian shepherd dogs">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317044801727627264_0.webp" alt="heart made of dogs">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316436410265239552_0.webp" alt="black dog chai dog">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317034836812103680_0.webp" alt="Black lab">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316046553630113792_0.webp" alt="Cat wearing Christmas hat">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316761882639466496_0.webp" alt="Christmas dog">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317054792299708416_0.webp" alt="An obese dog eating a sandwich">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317054792916271104_0.webp" alt="Cat with sunglasses">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315695763317063680_0.webp" alt="Black tri Aussie dog">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316351061161672704_0.webp" alt="fluffy chubby black puppy">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316351061094563840_0.webp" alt="fluffy fat black puppy pale pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317120198527942656_0.webp" alt="black border collie dog">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316808874119921664_0.webp" alt="Cute pink skeleton giving middle finger">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316426372003921920_0.webp" alt="raspberry waffles">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1421320935532658688_0.webp" alt="waffles with whipped cream and blueberries">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316341729124679680_0.webp" alt="soft pink mug filled with steaming hot raspberry tea">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316338857557360640_0.webp" alt="cute ugg slippers with pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316411373638385664_0.webp" alt="cute pink plaid folded blanket">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316062003709607936_0.webp" alt="Pink envelope with white flowers">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315695968275922944_0.webp" alt="white tulip bouquet">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315761196212682752_0.webp" alt="Dior lip gloss">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1393588549571313664_0.webp" alt="a white cute teddy bear">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316410246037504000_0.webp" alt="black gun, pale pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316424496659300352_0.webp" alt="Pastel pink heart with white bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316491653183176704_0.webp" alt="delicate swing adorned with bows">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316943291039612928_0.webp" alt="Cotton candy">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1417873295985868800_0.webp" alt="pink strawberries in a cute basket">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- juultje 分类 -->
+                <div class="category-section" id="juultje-section">
+                    <div class="category-header">
+                        <h2 class="category-name">juultje</h2>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span>❤️</span>
+                                <span>1379</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>👁️</span>
+                                <span>30</span>
+                            </div>
+                            <div class="user-tag">@Oscar</div>
+                        </div>
+                    </div>
+                    <div class="emoji-grid">
+                        <div class="emoji-card">
+                            <img src="./assets/1422316202000121856_0.webp" alt="Pink sparkly heart">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1422417539425632256_0.webp" alt="bow pink">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1422234790429458432_0.webp" alt="Croissant whit a rosa bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1421682968199430144_0.webp" alt="rosa hearth">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1421691775042453504_0.webp" alt="Pink sparkly heart">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1421282798819344384_0.webp" alt="pink really really short skirt">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1420966081484292096_0.webp" alt="make Instagram verified batch">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1419560415603458048_0.webp" alt="Christian Dior Pink Essence Perfume">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315690596437852160_0.webp" alt="Light pink iPhone 15">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315679936425492480_0.webp" alt="light pink lilium">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315679935548882944_0.webp" alt="hot chocolate with pink marshmallow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315680167212875776_0.webp" alt="pastel pink moon">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678848423034880_0.webp" alt="Realistic glass cookie jar">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315690348231524352_0.webp" alt="White headphones with pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316343044869455872_0.webp" alt="Pink AirPods">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316372608505085952_0.webp" alt="flower bouquet roses white and pink">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315691055357624320_0.webp" alt="Cocktail with pink flowers">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1324941183843041280_0.webp" alt="a pink skincare bottle glow recipe">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1348094449367908352_0.webp" alt="Cute light pink Coquette Bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678838415425536_0.webp" alt="starbucks cup pink drink">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315689840045457408_0.webp" alt="Light pink Porsche">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1340865665786970112_0.webp" alt="2 baby pink bow on headphones">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678575990407168_0.webp" alt="Light pink macaron">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316426166915039232_0.webp" alt="money with pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678389507457024_0.webp" alt="pink pistol with a pink ribbon">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316751208597159936_0.webp" alt="Light Pink shopping bags Dior">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315680166457901056_0.webp" alt="Gold Apple Watch with light pink band">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316755857458855936_0.webp" alt="Aesthetic light pink Netflix logo">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1378108500072202240_0.webp" alt="pink money">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316954963976388608_0.webp" alt="Light pink 40oz Stanley tumbler">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- emoji-cat 分类 -->
+                <div class="category-section" id="emoji-cat-section">
+                    <div class="category-header">
+                        <h2 class="category-name">emoji cat</h2>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span>❤️</span>
+                                <span>135</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>👁️</span>
+                                <span>12</span>
+                            </div>
+                            <div class="user-tag">@Ashley</div>
+                        </div>
+                    </div>
+                    <div class="emoji-grid">
+                        <div class="emoji-card">
+                            <img src="./assets/1315678112683393024_0.webp" alt="Coca Cola">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1317067302868353024_0.webp" alt="Iridescent heart with twinkle stars">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315678705216913408_0.webp" alt="light blue heart with clouds and stars">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1335360763769913344_0.webp" alt="lgbtq heart emoji">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315690947819864064_0.webp" alt="Autumn tree">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1409744921501368320_0.webp" alt="Blue hibiscus flower">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1413292703680036864_0.webp" alt="crea un corazón lila clarito">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1412623549809557504_0.webp" alt="Dachshunds dog">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316047127196991488_0.webp" alt="orange Hibiscus flower">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1322397513696673792_0.webp" alt="lavender bow emoji">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1414707975561412608_0.webp" alt="Pink sparkly heart">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1315696028057337856_0.webp" alt="Pastel white iridescent butterfly">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- memes 分类 -->
+                <div class="category-section" id="memes-section">
+                    <div class="category-header">
+                        <h2 class="category-name">memes</h2>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span>❤️</span>
+                                <span>5</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>👁️</span>
+                                <span>5</span>
+                            </div>
+                            <div class="user-tag">@Mercedes</div>
+                        </div>
+                    </div>
+                    <div class="emoji-grid">
+                        <div class="emoji-card">
+                            <img src="./assets/1422033683065339904_0.webp" alt="witch">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1422034182258819072_0.webp" alt="mushroom frog">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1422034506210082816_0.webp" alt="traffic cone">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1422034956804161536_0.webp" alt="troll face">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1422035582845976576_0.webp" alt="chatgpt logo">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- cutes 分类 -->
+                <div class="category-section" id="cutes-section">
+                    <div class="category-header">
+                        <h2 class="category-name">cutes</h2>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span>❤️</span>
+                                <span>57</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>👁️</span>
+                                <span>9</span>
+                            </div>
+                            <div class="user-tag">@Roy</div>
+                        </div>
+                    </div>
+                    <div class="emoji-grid">
+                        <div class="emoji-card">
+                            <img src="./assets/1316341729124679680_0.webp" alt="soft pink mug filled with steaming hot raspberry tea">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316411373638385664_0.webp" alt="cute pink plaid folded blanket">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316338857557360640_0.webp" alt="cute ugg slippers with pink bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316053962679386112_0.webp" alt="light pink cute teddy bear bow">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316453131504058368_0.webp" alt="high detailed pink cute axolotl">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316808874119921664_0.webp" alt="Cute pink skeleton giving the middle finger">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316053185764261888_0.webp" alt="hello kitty with hearts">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1316426372003921920_0.webp" alt="raspberry waffles">
+                        </div>
+                        <div class="emoji-card">
+                            <img src="./assets/1421320935532658688_0.webp" alt="waffles with whipped cream and blueberries">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div data-v-d927aa52="" class="footer-bar">
+                <div role="separator" class="van-divider van-divider--hairline footer-bar-divider"><!----></div>
+                <div class="footer-bar-content">
+                    <div class="col-lg-6 col-md-6">
+                        <p class="footer__copyright mb-15">
+                            ©2025 Emoji.ai All Right By <a class="footer__copyright-link" href="/">Emojis AI</a>.
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="footer__links mb-15">
+                            <span><a href="/PrivacyPolicy.html">PRIVACY POLICY</a></span>
+                            <span> - </span>
+                            <span><a href="/TermsOfService.html">TERMS OF SERVICES</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单控制
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('mobileSidebar')
+            const menuBtn = document.querySelector('.mobile-menu-btn')
+            
+            sidebar.classList.toggle('active')
+            menuBtn.classList.toggle('active')
+            
+            // 防止背景滚动
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden'
+            } else {
+                document.body.style.overflow = ''
+            }
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('mobileSidebar')
+            const menuBtn = document.querySelector('.mobile-menu-btn')
+            
+            sidebar.classList.remove('active')
+            menuBtn.classList.remove('active')
+            document.body.style.overflow = ''
+        }
+
+        // 监听窗口大小变化，大屏幕时自动关闭移动菜单
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeMobileMenu()
+            }
+        })
+
+        // 分类切换
+        function switchCategory(category) {
+            const tabs = document.querySelectorAll('.category-tab')
+            const sections = document.querySelectorAll('.category-section')
+            
+            // 更新标签状态
+            tabs.forEach(tab => tab.classList.remove('active'))
+            event.target.classList.add('active')
+            
+            // 显示/隐藏分类内容
+            if (category === 'all') {
+                sections.forEach(section => section.style.display = 'block')
+            } else {
+                sections.forEach(section => {
+                    const sectionId = section.id
+                    // 处理特殊情况：cute 和 cute2-section
+                    if (category === 'cute' && (sectionId === 'cute-section' || sectionId === 'cute2-section')) {
+                        section.style.display = 'block'
+                    } else if (category === 'hamsters' && sectionId === 'hamsters-section') {
+                        section.style.display = 'block'
+                    } else if (category === 'juul' && sectionId === 'juul-section') {
+                        section.style.display = 'block'
+                    } else if (category === 'juultje' && sectionId === 'juultje-section') {
+                        section.style.display = 'block'
+                    } else if (category === 'emoji-cat' && sectionId === 'emoji-cat-section') {
+                        section.style.display = 'block'
+                    } else if (category === 'memes' && sectionId === 'memes-section') {
+                        section.style.display = 'block'
+                    } else if (category === 'cutes' && sectionId === 'cutes-section') {
+                        section.style.display = 'block'
+                    } else {
+                        section.style.display = 'none'
+                    }
+                })
+            }
+        }
+
+        // 表情包卡片点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const emojiCards = document.querySelectorAll('.emoji-card')
+            emojiCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // 这里可以添加点击表情包的逻辑，比如放大显示、下载等
+                    console.log('Emoji card clicked:', this)
+                })
+            })
+        })
+    </script>
+</body>
+</html>

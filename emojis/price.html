@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price - Emojis AI</title>
+    <link rel="icon" href="../images/favicon.png" type="image/png">
+    
+    <!-- 外部样式 -->
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <link rel="stylesheet" href="../fontawesome.min.css">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- 自定义样式 -->
+    <style>
+        body {
+            background: var(--background-body);
+            font-family: var(--font-text);
+            color: var(--color-white);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #000;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 导航栏样式 */
+        .header {
+            position: fixed;
+            top: 0;
+            height: 80px;
+            width: 100%;
+            z-index: 999;
+            background-color: transparent;
+            transition: background-color 0.3s ease, height 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000000d9;
+        }
+
+        .nav-container {
+            width: 100%;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            height: 36px;
+        }
+
+        .logo img {
+            height: 36px;
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 40px;
+        }
+
+        .nav-menu li a {
+            color: var(--color-white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: var(--primary-color);
+        }
+
+        .pro-badge {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 移动端菜单按钮 */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 8px;
+            gap: 4px;
+        }
+
+        .mobile-menu-btn span {
+            width: 20px;
+            height: 2px;
+            background: var(--color-white);
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* 移动端侧边菜单 */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-sidebar.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .mobile-sidebar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .mobile-sidebar-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-sidebar.active .mobile-sidebar-content {
+            transform: translateX(0);
+        }
+
+        .mobile-sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-logo img {
+            height: 36px;
+        }
+
+        .mobile-logo span {
+            color: var(--color-white);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .mobile-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-white);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .mobile-nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mobile-nav-list li {
+            margin-bottom: 8px;
+        }
+
+        .mobile-nav-list a {
+            display: block;
+            padding: 16px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .mobile-nav-list a:hover,
+        .mobile-nav-list a.active {
+            color: var(--primary-color);
+            background: rgba(204, 255, 2, 0.1);
+            border-left-color: var(--primary-color);
+        }
+
+        .mobile-sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-pro-badge {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .pro-icon, .pro-emoji {
+            font-size: 16px;
+        }
+
+        /* 自定义滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Firefox 滚动条样式 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+        }
+
+        /* 主要内容区域 */
+        .content {
+            padding-top: 80px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .pricing-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-white);
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #00ff88 0%, #00ccff 50%, #ccff02 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pricing-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0;
+        }
+
+        /* 价格卡片 */
+        .pricing-plans {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-plan {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pricing-plan:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-plan.selected {
+            border-color: #ccff02;
+            background: rgba(204, 255, 2, 0.1);
+        }
+
+        .pricing-plan.recommended {
+            border-color: #ccff02;
+            background: rgba(204, 255, 2, 0.1);
+        }
+
+        .pricing-plan.recommended::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: linear-gradient(45deg, #00ff88, #ccff02);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .plan-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .plan-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-plan.selected .plan-radio {
+            border-color: #ccff02;
+        }
+
+        .pricing-plan.selected .plan-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: #ccff02;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .plan-info h3 {
+            color: var(--color-white);
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .plan-info p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .plan-price {
+            text-align: right;
+        }
+
+        .plan-price .price {
+            color: var(--color-white);
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .plan-price .period {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* 购买按钮 */
+        .buy-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(90deg, #00ff88 0%, #ccff02 100%);
+            border: none;
+            border-radius: 50px;
+            color: #000;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(204, 255, 2, 0.3);
+        }
+
+        /* 页脚 */
+        .footer {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-bar {
+            padding: 20px 0;
+        }
+
+        .footer-bar-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .footer-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer__copyright {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .footer__copyright-link {
+            color: #ccff02;
+            text-decoration: none;
+        }
+
+        .footer__copyright-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer__links {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .footer__links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer__links a:hover {
+            color: #ccff02;
+            text-decoration: underline;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .pro-badge {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .pricing-title {
+                font-size: 32px;
+            }
+
+            .pricing-container {
+                padding: 40px 16px;
+            }
+
+            .pricing-plan {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .plan-left {
+                width: 100%;
+            }
+
+            .plan-price {
+                text-align: left;
+                width: 100%;
+            }
+
+            .footer-bar-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pricing-container {
+                padding: 32px 12px;
+            }
+
+            .pricing-plan {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 导航栏 -->
+        <header class="header">
+            <div class="nav-container">
+                <a href="../index.html" class="logo">
+                    <img src="./assets/icon-logo.png" alt="" />
+                </a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="./index.html">Create</a></li>
+                        <li><a href="./gallery.html">Gallery</a></li>
+                        <li><a href="#" class="active">Price</a></li>
+                        <li><a href="./creation.html">Creation</a></li>
+                    </ul>
+                </nav>
+
+                <div class="pro-badge">✨ PRO 😎</div>
+                
+                <!-- 移动端菜单按钮 -->
+                <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 移动端侧边菜单 -->
+        <div class="mobile-sidebar" id="mobileSidebar">
+            <div class="mobile-sidebar-overlay" onclick="closeMobileMenu()"></div>
+            <div class="mobile-sidebar-content">
+                <div class="mobile-sidebar-header">
+                    <div class="mobile-logo">
+                        <img src="./assets/icon-logo.png" alt="Emojis AI" />
+                    </div>
+                    <button class="mobile-close-btn" onclick="closeMobileMenu()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <nav class="mobile-nav">
+                    <ul class="mobile-nav-list">
+                        <li><a href="./index.html">Create</a></li>
+                        <li><a href="./gallery.html">Gallery</a></li>
+                        <li><a href="#" class="active">Price</a></li>
+                        <li><a href="./creation.html">Creation</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-sidebar-footer">
+                    <div class="mobile-pro-badge">
+                        <span class="pro-icon">✨</span>
+                        <span>PRO Account</span>
+                        <span class="pro-emoji">😎</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容 -->
+        <main class="content">
+            <div class="pricing-container">
+                <!-- 页面标题 -->
+                <div class="pricing-header">
+                    <h1 class="pricing-title">Choose Your Plan</h1>
+                    <!-- <p class="pricing-subtitle">Unlock unlimited emoji creation with our premium plans</p> -->
+                </div>
+
+                <!-- 价格方案 -->
+                <div class="pricing-plans">
+                    <!-- One Week -->
+                    <div class="pricing-plan recommended" onclick="selectPlan(this)">
+                        <div class="plan-left">
+                            <div class="plan-radio"></div>
+                            <div class="plan-info">
+                                <h3>One Week</h3>
+                                <p>One Week website membership benefits</p>
+                            </div>
+                        </div>
+                        <div class="plan-price">
+                            <div class="price">$9.9</div>
+                            <div class="period">One Week</div>
+                        </div>
+                    </div>
+
+                    <!-- One Month -->
+                    <div class="pricing-plan" onclick="selectPlan(this)">
+                        <div class="plan-left">
+                            <div class="plan-radio"></div>
+                            <div class="plan-info">
+                                <h3>One Month</h3>
+                                <p>One Month website membership benefits</p>
+                            </div>
+                        </div>
+                        <div class="plan-price">
+                            <div class="price">$39.9</div>
+                            <div class="period">One Month</div>
+                        </div>
+                    </div>
+
+                    <!-- One Year -->
+                    <div class="pricing-plan" onclick="selectPlan(this)">
+                        <div class="plan-left">
+                            <div class="plan-radio"></div>
+                            <div class="plan-info">
+                                <h3>One Year</h3>
+                                <p>One Year website membership benefits</p>
+                            </div>
+                        </div>
+                        <div class="plan-price">
+                            <div class="price">$79.9</div>
+                            <div class="period">One Year</div>
+                        </div>
+                    </div>
+
+                    <!-- Lifetime -->
+                    <div class="pricing-plan" onclick="selectPlan(this)">
+                        <div class="plan-left">
+                            <div class="plan-radio"></div>
+                            <div class="plan-info">
+                                <h3>Lifetime</h3>
+                                <p>Lifetime website membership benefits</p>
+                            </div>
+                        </div>
+                        <div class="plan-price">
+                            <div class="price">$79.9</div>
+                            <div class="period">Lifetime</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 购买按钮 -->
+                <button class="buy-button" onclick="buyNow()">
+                    Buy Now
+                </button>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div data-v-d927aa52="" class="footer-bar">
+                <div role="separator" class="van-divider van-divider--hairline footer-bar-divider"><!----></div>
+                <div class="footer-bar-content">
+                    <div class="col-lg-6 col-md-6">
+                        <p class="footer__copyright mb-15">
+                            ©2025 Emoji.ai All Right By <a class="footer__copyright-link" href="/">Emojis AI</a>.
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="footer__links mb-15">
+                            <span><a href="/PrivacyPolicy.html">PRIVACY POLICY</a></span>
+                            <span> - </span>
+                            <span><a href="/TermsOfService.html">TERMS OF SERVICES</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单控制
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('mobileSidebar')
+            const menuBtn = document.querySelector('.mobile-menu-btn')
+            
+            sidebar.classList.toggle('active')
+            menuBtn.classList.toggle('active')
+            
+            // 防止背景滚动
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden'
+            } else {
+                document.body.style.overflow = ''
+            }
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('mobileSidebar')
+            const menuBtn = document.querySelector('.mobile-menu-btn')
+            
+            sidebar.classList.remove('active')
+            menuBtn.classList.remove('active')
+            document.body.style.overflow = ''
+        }
+
+        // 监听窗口大小变化，大屏幕时自动关闭移动菜单
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeMobileMenu()
+            }
+        })
+
+        // 价格方案选择
+        function selectPlan(planElement) {
+            // 移除所有选中状态
+            const allPlans = document.querySelectorAll('.pricing-plan')
+            allPlans.forEach(plan => {
+                plan.classList.remove('selected')
+            })
+            
+            // 添加选中状态到当前点击的方案
+            planElement.classList.add('selected')
+        }
+
+        // 购买按钮点击
+        function buyNow() {
+            const selectedPlan = document.querySelector('.pricing-plan.selected')
+            if (selectedPlan) {
+                const planName = selectedPlan.querySelector('h3').textContent
+                const planPrice = selectedPlan.querySelector('.price').textContent
+                alert(`You selected: ${planName} - ${planPrice}\nRedirecting to payment...`)
+                // 这里可以添加实际的支付逻辑
+            } else {
+                alert('Please select a plan first!')
+            }
+        }
+
+        // 页面加载时默认选择第一个方案
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstPlan = document.querySelector('.pricing-plan.recommended')
+            if (firstPlan) {
+                firstPlan.classList.add('selected')
+            }
+        })
+    </script>
+</body>
+</html>
