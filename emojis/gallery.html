@@ -193,7 +193,7 @@
 
         .user-coins {
             color: #ccff02;
-            font-size: 14px;
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -819,7 +819,7 @@
                     </ul>
                 </nav>
                 <div class="mobile-sidebar-footer">
-                    <div class="mobile-pro-badge">
+                    <div class="mobile-pro-badge" onclick="toggleUserSidebar()">
                         <span class="pro-icon">✨</span>
                         <span>PRO Account</span>
                         <span class="pro-emoji">😎</span>
@@ -1511,17 +1511,17 @@
 
         <div class="user-info">
             <div class="user-avatar">😎</div>
-            <div class="user-name">Alyssa</div>
+            <div class="user-name" id="user-name">Alyssa</div>
             <div class="user-coins">
-                <span>🪙</span>
-                <span>0</span>
+                <img src="./assets/coin.png" alt="" id="user-coin-icon" style="width: 20px; height: 20px;">
+                <span id="user-coins" >0</span>
             </div>
             <div class="user-id">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4L13.5 7H7V9H13.5L15 12L21 9ZM4 7V9H6V7H4ZM3 13V11H1V13H3ZM6 13V11H4V13H6Z"/>
                 </svg>
                 <span>User ID</span>
-                <span>11994963</span>
+                <span id="user-id">11994963</span>
             </div>
         </div>
 
@@ -1571,8 +1571,33 @@
         </div>
     </div>
 
+    <script src="../js/axios.min.js"></script>
+    <script src="../js/md5.js"></script>
+    <script src="../js/request.js"></script>
     <!-- JavaScript -->
     <script>
+        // 用户侧边栏控制
+        let userInfo = null
+        window.onload = function () {
+            if (localStorage.getItem('userInfo')) {
+                userInfo = JSON.parse(localStorage.getItem('userInfo'))
+                updateUserInfo()
+                return
+            }
+            get('/my/profile').then((res) => {
+                userInfo = res
+                localStorage.setItem('userInfo', JSON.stringify(res))
+                updateUserInfo()
+            })
+        }
+        function updateUserInfo() {
+            const userName = document.getElementById('user-name')
+            const userCoins = document.getElementById('user-coins')
+           
+            const userId = document.getElementById('user-id')
+            userName.textContent = userInfo.userInfo.nickname
+            userCoins.textContent = userInfo.userInfo.remain_coins
+        }
         // 用户侧边栏控制
         function toggleUserSidebar() {
             const sidebar = document.getElementById('userSidebar');

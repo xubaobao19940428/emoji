@@ -20,7 +20,7 @@
 				margin: 0;
 				padding: 0;
 				min-height: 100vh;
-                background-color: #000;
+				background-color: #000;
 			}
 
 			.main-container {
@@ -192,7 +192,7 @@
 
 			.user-coins {
 				color: #ccff02;
-				font-size: 14px;
+				font-size: 16px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -336,13 +336,13 @@
 
 			.input-container {
 				position: relative;
-                height: 160px;
+				height: 160px;
 				margin-bottom: 30px;
 				padding: 2px;
 				border-radius: 28px;
 				background: linear-gradient(45deg, rgb(255, 230, 77), rgb(255, 169, 0));
 				position: relative;
-                box-sizing: border-box;
+				box-sizing: border-box;
 			}
 
 			.emoji-input {
@@ -386,9 +386,9 @@
 				cursor: pointer;
 				transition: all 0.3s ease;
 				backdrop-filter: blur(10px);
-                position: relative;
-                bottom: 0;
-                font-weight: 700;
+				position: relative;
+				bottom: 0;
+				font-weight: 700;
 			}
 
 			.tag:hover {
@@ -642,7 +642,6 @@
 			}
 
 			.mobile-logo img {
-				
 				height: 36px;
 			}
 
@@ -716,7 +715,8 @@
 				font-size: 14px;
 			}
 
-			.pro-icon, .pro-emoji {
+			.pro-icon,
+			.pro-emoji {
 				font-size: 16px;
 			}
 
@@ -748,16 +748,7 @@
 				left: -100%;
 				width: 25%;
 				height: 100%;
-				background: linear-gradient(
-					90deg,
-					transparent,
-					rgba(255, 255, 255, 0.3),
-					rgba(255, 255, 255, 0.5),
-					rgba(255, 255, 255, .7),
-					rgba(255, 255, 255, 0.5),
-					rgba(255, 255, 255, 0.3),
-					transparent
-				);
+				background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3), transparent);
 				transform: skewX(-10deg);
 				transition: left 0.5s ease;
 				border-radius: 50px;
@@ -767,7 +758,6 @@
 			.generate-button:hover::before {
 				left: 120%;
 			}
-
 
 			.generate-button:hover {
 				transform: translateY(-2px);
@@ -949,7 +939,7 @@
 					</nav>
 
 					<div class="pro-badge" onclick="toggleUserSidebar()">✨ PRO 😎</div>
-					
+
 					<!-- 移动端菜单按钮 -->
 					<div class="mobile-menu-btn" onclick="toggleMobileMenu()">
 						<span></span>
@@ -969,20 +959,20 @@
 						</div>
 						<button class="mobile-close-btn" onclick="closeMobileMenu()">
 							<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-								<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+								<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
 							</svg>
 						</button>
 					</div>
 					<nav class="mobile-nav">
-					<ul class="mobile-nav-list">
-						<li><a href="#" class="active">Create</a></li>
-						<li><a href="./gallery.html">Gallery</a></li>
-						<li><a href="./price.html">Price</a></li>
-						<li><a href="./creation.html">Creation</a></li>
-					</ul>
+						<ul class="mobile-nav-list">
+							<li><a href="#" class="active">Create</a></li>
+							<li><a href="./gallery.html">Gallery</a></li>
+							<li><a href="./price.html">Price</a></li>
+							<li><a href="./creation.html">Creation</a></li>
+						</ul>
 					</nav>
 					<div class="mobile-sidebar-footer">
-						<div class="mobile-pro-badge">
+						<div class="mobile-pro-badge" onclick="toggleUserSidebar()">
 							<span class="pro-icon">✨</span>
 							<span>PRO Account</span>
 							<span class="pro-emoji">😎</span>
@@ -1005,7 +995,7 @@
 						<!-- Text to Emoji 内容 -->
 						<div class="text-input-content" id="textInputContent">
 							<div class="input-container">
-								<textarea class="emoji-input"  placeholder="Type your emoji idea. Describe it in a few words." id="emojiInput"></textarea>
+								<textarea class="emoji-input" placeholder="Type your emoji idea. Describe it in a few words." id="emojiInput"></textarea>
 							</div>
 
 							<!-- 示例标签 -->
@@ -1019,20 +1009,20 @@
 						</div>
 
 						<!-- Face to Emoji 内容 -->
-						<div class="face-input-content" id="faceInputContent" style="display: none;">
+						<div class="face-input-content" id="faceInputContent" style="display: none">
 							<div class="upload-container">
 								<div class="upload-zone" onclick="triggerFileUpload()">
 									<div class="upload-icon">
 										<svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-											<path d="M17 8L12 3L7 8" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-											<path d="M12 3V15" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+											<path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+											<path d="M17 8L12 3L7 8" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+											<path d="M12 3V15" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 										</svg>
 									</div>
 									<h3 class="upload-title">Upload photo with clear, frontal face</h3>
 									<p class="upload-subtitle">Click to upload or drag and drop</p>
 								</div>
-								<input type="file" id="faceUpload" accept="image/*" style="display: none;" onchange="handleFileUpload(this)">
+								<input type="file" id="faceUpload" accept="image/*" style="display: none" onchange="handleFileUpload(this)" />
 							</div>
 
 							<!-- 示例照片 -->
@@ -1043,13 +1033,13 @@
 								</div>
 								<div class="example-photos">
 									<div class="example-photo">
-										<img src="./assets/ex1.png" alt="Example 1">
+										<img src="./assets/ex1.png" alt="Example 1" />
 									</div>
 									<div class="example-photo">
-										<img src="./assets/ex2.png" alt="Example 2">
+										<img src="./assets/ex2.png" alt="Example 2" />
 									</div>
 									<div class="example-photo">
-										<img src="./assets/ex3.png" alt="Example 3">
+										<img src="./assets/ex3.png" alt="Example 3" />
 									</div>
 								</div>
 							</div>
@@ -1067,9 +1057,7 @@
 					<div role="separator" class="van-divider van-divider--hairline footer-bar-divider"><!----></div>
 					<div class="footer-bar-content">
 						<div class="col-lg-6 col-md-6">
-							<p class="footer__copyright mb-15">
-								©2025 Emoji.ai All Right By <a class="footer__copyright-link" href="/">Emojis AI</a>.
-							</p>
+							<p class="footer__copyright mb-15">©2025 Emoji.ai All Right By <a class="footer__copyright-link" href="/">Emojis AI</a>.</p>
 						</div>
 						<div class="col-lg-6 col-md-6">
 							<div class="footer__links mb-15">
@@ -1092,24 +1080,24 @@
 				</div>
 				<button class="sidebar-close" onclick="closeUserSidebar()">
 					<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+						<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
 					</svg>
 				</button>
 			</div>
 
 			<div class="user-info">
 				<div class="user-avatar">😎</div>
-				<div class="user-name">Alyssa</div>
+				<div class="user-name" id="user-name">Alyssa</div>
 				<div class="user-coins">
-					<span>🪙</span>
-					<span>0</span>
+					<img src="./assets/coin.png" alt="" id="user-coin-icon" style="width: 20px; height: 20px;">
+					<span id="user-coins" >0</span>
 				</div>
 				<div class="user-id">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4L13.5 7H7V9H13.5L15 12L21 9ZM4 7V9H6V7H4ZM3 13V11H1V13H3ZM6 13V11H4V13H6Z"/>
+						<path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4L13.5 7H7V9H13.5L15 12L21 9ZM4 7V9H6V7H4ZM3 13V11H1V13H3ZM6 13V11H4V13H6Z" />
 					</svg>
 					<span>User ID</span>
-					<span>11994963</span>
+					<span id="user-id">11994963</span>
 				</div>
 			</div>
 
@@ -1149,7 +1137,7 @@
 			<div class="sidebar-footer">
 				<div class="version-info">
 					<span>ℹ️ Version</span>
-					<span style="float: right;">v1.0.3</span>
+					<span style="float: right">v1.0.3</span>
 				</div>
 				<a href="#" class="switch-account">
 					<span class="switch-account-icon">👤</span>
@@ -1158,59 +1146,82 @@
 				</a>
 			</div>
 		</div>
-
+		<script src="../js/axios.min.js"></script>
+		<script src="../js/md5.js"></script>
+		<script src="../js/request.js"></script>
 		<!-- JavaScript -->
 		<script>
-		// 用户侧边栏控制
-		function toggleUserSidebar() {
-			const sidebar = document.getElementById('userSidebar');
-			const overlay = document.querySelector('.sidebar-overlay');
-			
-			sidebar.classList.toggle('active');
-			overlay.classList.toggle('active');
-			
-			// 防止背景滚动
-			if (sidebar.classList.contains('active')) {
-				document.body.style.overflow = 'hidden';
-			} else {
-				document.body.style.overflow = '';
+			// 用户侧边栏控制
+            let userInfo = null
+			window.onload = function () {
+				if (localStorage.getItem('userInfo')) {
+                    userInfo = JSON.parse(localStorage.getItem('userInfo'))
+                    updateUserInfo()
+					return
+				}
+				get('/my/profile').then((res) => {
+					userInfo = res
+					localStorage.setItem('userInfo', JSON.stringify(res))
+					updateUserInfo()
+				})
 			}
-		}
+            function updateUserInfo() {
+                const userName = document.getElementById('user-name')
+                const userCoins = document.getElementById('user-coins')
+               
+                const userId = document.getElementById('user-id')
+                userName.textContent = userInfo.userInfo.nickname
+                userCoins.textContent = userInfo.userInfo.remain_coins
+            }
+			function toggleUserSidebar() {
+				const sidebar = document.getElementById('userSidebar')
+				const overlay = document.querySelector('.sidebar-overlay')
 
-		function closeUserSidebar() {
-			const sidebar = document.getElementById('userSidebar');
-			const overlay = document.querySelector('.sidebar-overlay');
-			
-			sidebar.classList.remove('active');
-			overlay.classList.remove('active');
-			document.body.style.overflow = '';
-		}
+				sidebar.classList.toggle('active')
+				overlay.classList.toggle('active')
 
-		// ESC键关闭侧边栏
-		document.addEventListener('keydown', function(e) {
-			if (e.key === 'Escape') {
-				closeUserSidebar();
+				// 防止背景滚动
+				if (sidebar.classList.contains('active')) {
+					document.body.style.overflow = 'hidden'
+				} else {
+					document.body.style.overflow = ''
+				}
 			}
-		});
 
-		// 切换选项卡
-		function switchTab(type) {
-			const tabs = document.querySelectorAll('.tab-button')
-			const textContent = document.getElementById('textInputContent')
-			const faceContent = document.getElementById('faceInputContent')
-			
-			tabs.forEach((tab) => tab.classList.remove('active'))
+			function closeUserSidebar() {
+				const sidebar = document.getElementById('userSidebar')
+				const overlay = document.querySelector('.sidebar-overlay')
 
-			if (type === 'text') {
-				tabs[0].classList.add('active')
-				textContent.style.display = 'block'
-				faceContent.style.display = 'none'
-			} else {
-				tabs[1].classList.add('active')
-				textContent.style.display = 'none'
-				faceContent.style.display = 'block'
+				sidebar.classList.remove('active')
+				overlay.classList.remove('active')
+				document.body.style.overflow = ''
 			}
-		}
+
+			// ESC键关闭侧边栏
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape') {
+					closeUserSidebar()
+				}
+			})
+
+			// 切换选项卡
+			function switchTab(type) {
+				const tabs = document.querySelectorAll('.tab-button')
+				const textContent = document.getElementById('textInputContent')
+				const faceContent = document.getElementById('faceInputContent')
+
+				tabs.forEach((tab) => tab.classList.remove('active'))
+
+				if (type === 'text') {
+					tabs[0].classList.add('active')
+					textContent.style.display = 'block'
+					faceContent.style.display = 'none'
+				} else {
+					tabs[1].classList.add('active')
+					textContent.style.display = 'none'
+					faceContent.style.display = 'block'
+				}
+			}
 
 			// 填充输入框
 			function fillInput(element) {
@@ -1238,28 +1249,28 @@
 				})
 			}
 
-		// 触发文件上传
-		function triggerFileUpload() {
-			document.getElementById('faceUpload').click()
-		}
-
-		// 处理文件上传
-		function handleFileUpload(input) {
-			const file = input.files[0]
-			if (file) {
-				const reader = new FileReader()
-				reader.onload = function(e) {
-					// 显示预览
-					showImagePreview(e.target.result)
-				}
-				reader.readAsDataURL(file)
+			// 触发文件上传
+			function triggerFileUpload() {
+				document.getElementById('faceUpload').click()
 			}
-		}
 
-		// 显示图片预览
-		function showImagePreview(imageSrc) {
-			const uploadZone = document.querySelector('.upload-zone')
-			uploadZone.innerHTML = `
+			// 处理文件上传
+			function handleFileUpload(input) {
+				const file = input.files[0]
+				if (file) {
+					const reader = new FileReader()
+					reader.onload = function (e) {
+						// 显示预览
+						showImagePreview(e.target.result)
+					}
+					reader.readAsDataURL(file)
+				}
+			}
+
+			// 显示图片预览
+			function showImagePreview(imageSrc) {
+				const uploadZone = document.querySelector('.upload-zone')
+				uploadZone.innerHTML = `
 				<div class="image-preview">
 					<div class="image-container">
 						<img src="${imageSrc}" alt="Uploaded image" style="max-width: 200px; max-height: 200px; border-radius: 12px;">
@@ -1272,15 +1283,15 @@
 					</div>
 				</div>
 			`
-		}
-		// 重置上传
-		function resetUpload(event) {
-			if (event) {
-				event.stopPropagation();
-				event.preventDefault();
 			}
-			const uploadZone = document.querySelector('.upload-zone')
-			uploadZone.innerHTML = `
+			// 重置上传
+			function resetUpload(event) {
+				if (event) {
+					event.stopPropagation()
+					event.preventDefault()
+				}
+				const uploadZone = document.querySelector('.upload-zone')
+				uploadZone.innerHTML = `
 				<div class="upload-icon">
 					<svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1291,41 +1302,41 @@
 				<h3 class="upload-title">Upload photo with clear, frontal face</h3>
 				<p class="upload-subtitle">Click to upload or drag and drop</p>
 			`
-			
-			// 清空文件输入
-			document.getElementById('faceUpload').value = ''
-			
-			// 重新绑定点击事件
-			uploadZone.onclick = triggerFileUpload
-			
-			// 重新绑定拖拽事件
-			bindDragEvents(uploadZone)
-		}
 
-		// 生成表情包
-		function generateEmoji() {
-			const activeTab = document.querySelector('.tab-button.active').textContent
-			
-			if (activeTab.includes('Text')) {
-				const input = document.getElementById('emojiInput')
-				const text = input.value.trim()
+				// 清空文件输入
+				document.getElementById('faceUpload').value = ''
 
-				if (!text) {
-					alert('请输入您的表情包创意描述！')
-					return
-				}
+				// 重新绑定点击事件
+				uploadZone.onclick = triggerFileUpload
 
-				alert(`正在生成表情包: "${text}"\n\n这里将连接到 AI 生成服务！`)
-			} else {
-				const fileInput = document.getElementById('faceUpload')
-				if (!fileInput.files[0]) {
-					alert('请先上传一张照片！')
-					return
-				}
-
-				alert('正在处理您的照片并生成表情包...\n\n这里将连接到 AI 人脸识别服务！')
+				// 重新绑定拖拽事件
+				bindDragEvents(uploadZone)
 			}
-		}
+
+			// 生成表情包
+			function generateEmoji() {
+				const activeTab = document.querySelector('.tab-button.active').textContent
+
+				if (activeTab.includes('Text')) {
+					const input = document.getElementById('emojiInput')
+					const text = input.value.trim()
+
+					if (!text) {
+						alert('请输入您的表情包创意描述！')
+						return
+					}
+
+					alert(`正在生成表情包: "${text}"\n\n这里将连接到 AI 生成服务！`)
+				} else {
+					const fileInput = document.getElementById('faceUpload')
+					if (!fileInput.files[0]) {
+						alert('请先上传一张照片！')
+						return
+					}
+
+					alert('正在处理您的照片并生成表情包...\n\n这里将连接到 AI 人脸识别服务！')
+				}
+			}
 
 			// 添加一些交互效果
 			document.addEventListener('DOMContentLoaded', function () {
@@ -1358,33 +1369,33 @@
 
 			// 绑定拖拽事件的函数
 			function bindDragEvents(uploadZone) {
-				uploadZone.addEventListener('dragover', function(e) {
+				uploadZone.addEventListener('dragover', function (e) {
 					e.preventDefault()
 					this.style.borderColor = 'rgba(0, 255, 136, 1)'
 					this.style.background = 'rgba(0, 255, 136, 0.1)'
 				})
 
-				uploadZone.addEventListener('dragleave', function(e) {
+				uploadZone.addEventListener('dragleave', function (e) {
 					e.preventDefault()
 					this.style.borderColor = 'rgba(0, 255, 136, 0.5)'
 					this.style.background = 'rgba(0, 0, 0, 0.2)'
 				})
 
-				uploadZone.addEventListener('drop', function(e) {
+				uploadZone.addEventListener('drop', function (e) {
 					e.preventDefault()
 					this.style.borderColor = 'rgba(0, 255, 136, 0.5)'
 					this.style.background = 'rgba(0, 0, 0, 0.2)'
-					
+
 					const files = e.dataTransfer.files
 					if (files.length > 0) {
 						const file = files[0]
 						if (file.type.startsWith('image/')) {
 							const reader = new FileReader()
-							reader.onload = function(e) {
+							reader.onload = function (e) {
 								showImagePreview(e.target.result)
 							}
 							reader.readAsDataURL(file)
-							
+
 							// 同步到文件输入框
 							const fileInput = document.getElementById('faceUpload')
 							const dt = new DataTransfer()
@@ -1397,37 +1408,37 @@
 				})
 			}
 
-		// 移动端菜单控制
-		function toggleMobileMenu() {
-			const sidebar = document.getElementById('mobileSidebar')
-			const menuBtn = document.querySelector('.mobile-menu-btn')
-			
-			sidebar.classList.toggle('active')
-			menuBtn.classList.toggle('active')
-			
-			// 防止背景滚动
-			if (sidebar.classList.contains('active')) {
-				document.body.style.overflow = 'hidden'
-			} else {
+			// 移动端菜单控制
+			function toggleMobileMenu() {
+				const sidebar = document.getElementById('mobileSidebar')
+				const menuBtn = document.querySelector('.mobile-menu-btn')
+
+				sidebar.classList.toggle('active')
+				menuBtn.classList.toggle('active')
+
+				// 防止背景滚动
+				if (sidebar.classList.contains('active')) {
+					document.body.style.overflow = 'hidden'
+				} else {
+					document.body.style.overflow = ''
+				}
+			}
+
+			function closeMobileMenu() {
+				const sidebar = document.getElementById('mobileSidebar')
+				const menuBtn = document.querySelector('.mobile-menu-btn')
+
+				sidebar.classList.remove('active')
+				menuBtn.classList.remove('active')
 				document.body.style.overflow = ''
 			}
-		}
 
-		function closeMobileMenu() {
-			const sidebar = document.getElementById('mobileSidebar')
-			const menuBtn = document.querySelector('.mobile-menu-btn')
-			
-			sidebar.classList.remove('active')
-			menuBtn.classList.remove('active')
-			document.body.style.overflow = ''
-		}
-
-		// 监听窗口大小变化，大屏幕时自动关闭移动菜单
-		window.addEventListener('resize', function() {
-			if (window.innerWidth > 768) {
-				closeMobileMenu()
-			}
-		})
+			// 监听窗口大小变化，大屏幕时自动关闭移动菜单
+			window.addEventListener('resize', function () {
+				if (window.innerWidth > 768) {
+					closeMobileMenu()
+				}
+			})
 		</script>
 	</body>
 </html>
