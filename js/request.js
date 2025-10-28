@@ -61,7 +61,9 @@ class HttpClient {
         this.defaultHeaders = {
             'Content-Type': 'application/json',
             'x-app-version': CONFIG.VERSION,
-            'x-app-timezone': utils.getTimeZone()
+            'x-app-timezone': utils.getTimeZone(),
+            'x-app-id':1,
+            'x-app-domain':location.host
         };
     }
 
