@@ -62,8 +62,6 @@ class HttpClient {
             'Content-Type': 'application/json',
             'x-app-version': CONFIG.VERSION,
             'x-app-timezone': utils.getTimeZone(),
-            'x-app-id':1,
-            'x-app-domain':location.host
         };
     }
 
@@ -121,7 +119,7 @@ class HttpClient {
         const headers = {
             ...this.defaultHeaders,
             'x-app-id': '1',
-            'x-app-domain': location.host
+            'x-app-domain': 'undressly.app'
         };
 
         if (token) {
