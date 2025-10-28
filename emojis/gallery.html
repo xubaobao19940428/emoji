@@ -94,6 +94,193 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pro-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        /* 用户侧边栏样式 */
+        .user-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .user-sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-close {
+            background: transparent;
+            border: none;
+            color: var(--color-white);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 24px;
+        }
+
+        .user-name {
+            color: var(--color-white);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .user-coins {
+            color: #ccff02;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .user-id {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            color: var(--primary-color);
+            background: rgba(204, 255, 2, 0.1);
+            border-left-color: var(--primary-color);
+        }
+
+        .menu-item-icon {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .menu-item-arrow {
+            margin-left: auto;
+            font-size: 14px;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .version-info {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .switch-account {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .switch-account:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .switch-account-icon {
+            margin-right: 8px;
+        }
+
+        .switch-account-arrow {
+            margin-left: auto;
         }
 
         /* 移动端菜单按钮 */
@@ -598,7 +785,7 @@
                     </ul>
                 </nav>
 
-                <div class="pro-badge">✨ PRO 😎</div>
+                <div class="pro-badge" onclick="toggleUserSidebar()">✨ PRO 😎</div>
                 
                 <!-- 移动端菜单按钮 -->
                 <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
@@ -1308,8 +1495,116 @@
         </footer>
     </div>
 
+    <!-- 用户侧边栏 -->
+    <div class="sidebar-overlay" onclick="closeUserSidebar()"></div>
+    <div class="user-sidebar" id="userSidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="./assets/icon-logo.png" alt="Emojis AI" />
+            </div>
+            <button class="sidebar-close" onclick="closeUserSidebar()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="user-info">
+            <div class="user-avatar">😎</div>
+            <div class="user-name">Alyssa</div>
+            <div class="user-coins">
+                <span>🪙</span>
+                <span>0</span>
+            </div>
+            <div class="user-id">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4L13.5 7H7V9H13.5L15 12L21 9ZM4 7V9H6V7H4ZM3 13V11H1V13H3ZM6 13V11H4V13H6Z"/>
+                </svg>
+                <span>User ID</span>
+                <span>11994963</span>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+            <a href="./index.html" class="menu-item">
+                <span class="menu-item-icon">⏰</span>
+                <span>Create</span>
+                <span class="menu-item-arrow">›</span>
+            </a>
+            <a href="./gallery.html" class="menu-item active">
+                <span class="menu-item-icon">🖼️</span>
+                <span>Gallery</span>
+                <span class="menu-item-arrow">›</span>
+            </a>
+            <a href="./price.html" class="menu-item">
+                <span class="menu-item-icon">💰</span>
+                <span>Price</span>
+                <span class="menu-item-arrow">›</span>
+            </a>
+            <a href="./creation.html" class="menu-item">
+                <span class="menu-item-icon">❤️</span>
+                <span>Creation</span>
+                <span class="menu-item-arrow">›</span>
+            </a>
+            <a href="../TermsOfService.html" class="menu-item">
+                <span class="menu-item-icon">📄</span>
+                <span>Term of Service</span>
+                <span class="menu-item-arrow">›</span>
+            </a>
+            <a href="../PrivacyPolicy.html" class="menu-item">
+                <span class="menu-item-icon">🔒</span>
+                <span>Privacy Policy</span>
+                <span class="menu-item-arrow">›</span>
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="version-info">
+                <span>ℹ️ Version</span>
+                <span style="float: right;">v1.0.3</span>
+            </div>
+            <a href="#" class="switch-account">
+                <span class="switch-account-icon">👤</span>
+                <span>Switch Account</span>
+                <span class="switch-account-arrow">›</span>
+            </a>
+        </div>
+    </div>
+
     <!-- JavaScript -->
     <script>
+        // 用户侧边栏控制
+        function toggleUserSidebar() {
+            const sidebar = document.getElementById('userSidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // 防止背景滚动
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function closeUserSidebar() {
+            const sidebar = document.getElementById('userSidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ESC键关闭侧边栏
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeUserSidebar();
+            }
+        });
+
         // 移动端菜单控制
         function toggleMobileMenu() {
             const sidebar = document.getElementById('mobileSidebar')

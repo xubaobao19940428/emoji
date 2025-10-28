@@ -137,6 +137,9 @@
 			</div>
 		</div>
         <script src="../js/axios.min.js"></script>
+        <script src="../js/md5.js"></script>
+        <script src="../js/getToken.js"></script>
+        <script src="../js/request.js"></script>
 		<script>
             /**
              * 字符串加密解密 - JavaScript版本
@@ -428,43 +431,16 @@
                 return Math.abs(hash).toString(16).padStart(32, '0');
             };
 
-            // 测试函数
-            // function testAuthcode() {
-            //     const testString = 'Hello World!';
-            //     const key = 'mySecretKey';
-                
-            //     console.log('=== 基础测试 ===');
-            //     console.log('原始字符串:', testString);
-                
-            //     // 加密
-            //     const encoded = authcode(testString, 'ENCODE', key);
-            //     console.log('加密结果:', encoded);
-                
-            //     // 解密
-            //     const decoded = authcode(encoded, 'DECODE', key);
-            //     console.log('解密结果:', decoded);
-                
-            //     const basicTest = decoded === testString;
-            //     console.log('基础测试:', basicTest ? '通过' : '失败');
-                
-            //     // 测试您提供的加密字符串
-            //     console.log('\n=== 外部字符串测试 ===');
-            //     const externalEncrypted = window.decodeURIComponent('627fpqWWAjsc2t%2F3kAtmjAvPzq1x9UwAWoX%2BjzOkvlSWCyJBqLDDVKNrq0cJ0OPX1armQRsg93q87Qtsp8rhXNgJdqB8HejQHcMS0C9rJXq8ddIcqcieZSjokp91iTnJdcz5JbPwbaBQeO46Y6EjcVBx5FWX3No27cVK2MvrAdpX5zTBtzzcx1biwAoTRD9MivYZQmgiUY7XthCxri2BAl%2BjPtGQaFvBbxE7CKHao1m3vaHe0clbIukR6uXkF70Vus0');
-            //     console.log('外部加密字符串:', externalEncrypted);
-                
-            //     // 尝试不同的密钥解密
-               
-            //     const result = authcode(externalEncrypted, 'DECODE', '');
-            //     console.log(`✅ 使用密钥 "${''}" 解密成功:`, result)
-                
-            //     return basicTest;
-            // }
-
 			window.onload = function () {
-                const redirect_code = window.location.search.split('redirect?t=')[1];
-                console.log(redirect_code)
-                const result = authcode(redirect_code, 'DECODE', '');
-                window.location.replace(result);
+                const urlParams = new URLSearchParams(window.location.search);
+                const result = urlParams.get('redirect?t');
+                get('/my/profile').then(res => {
+                    localStorage.setItem('userInfo', JSON.stringify(res))
+                    window.location.replace(result);
+                }).finally(() => {
+                    document.querySelector('.spinner').style.display = 'none';
+                    document.querySelector('.order-pay').style.display = 'flex';
+                })
                 
             }
 
