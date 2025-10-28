@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<style>
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #000;
+		}
+		.page-loading {
+			width: 100%;
+			height: 100%;
+			background-color: #000;
+			display: flex;
+            flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		.spinner {
+			width: 40px;
+			height: 40px;
+			border: 4px solid #ccc;
+			border-top-color: #42b983;
+			border-radius: 50%;
+			animation: spin 1s infinite linear;
+		}
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+        .order-pay{
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            display: none;
+        }
+        .order-loading{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .van-loading{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        /* Vant Loading Spinner */
+        .van-loading__spinner {
+            position: relative;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+        }
+
+        .van-loading__spinner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-top: 2px solid #c8c9cc;
+            border-radius: 50%;
+            animation: van-loading-rotate 0.8s linear infinite;
+        }
+
+        .van-loading__spinner--spinner::before {
+            border: none;
+            background: conic-gradient(from 0deg, transparent 0deg, #c8c9cc 360deg);
+            mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+        }
+
+        @keyframes van-loading-rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .van-button{
+            width: 100px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, rgb(145, 48, 252) 0%, rgb(255, 50, 229) 50%, rgb(255, 228, 133) 100%);
+            color: white;
+            border: 0px;
+            cursor: pointer;
+        }
+	</style>
+	<body>
+		<div class="page-loading">
+			<div class="spinner"></div>
+			<div
+				class="order-pay"
+				style="
+					background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAYAAADDhn8LAAADH0lEQVR4AezTSXLqMBRAUervf9F/RJWLOCYIyXrNySQJYDXncf89/BAg8KuAQH6l8QaBx0MgvgUELgQEcoHjLQIC8R0gcCGwMJCLXb1FIImAQJIMyjH3CAhkj7tdkwgIJMmgHHOPgED2uNs1iUDOQJLgOmZ+AYHkn6EbLBQQyEJcS+cXEEj+GbrBQgGBLMS1dH4BgbzM0L8EjgICOWr4m8CLgEBeQPxL4CggkKOGvwm8CAjkBcS/BI4CAjlqrP3b6gkFBJJwaI58n4BA7rO2U0IBgSQcmiPfJyCQ+6ztlFBAIAmH9vPIXlklIJBVstYtISCQEmN0iVUCAlkla90SAgIpMUaXWCUgkFWyVdZtfg+BNP8CuP61gECufbzbXEAgzb8Arn8tIJBrH+82FxBI8y/Azutn2FsgGabkjNsEBLKN3sYZBASSYUrOuE1AINvobZxBQCAZpuSMnwpM+7xAplFaqKKAQCpO1Z2mCQhkGqWFKgoIpOJU3WmagECmUVqoosDPQCre0p0IDAoIZBDOYz0EBNJjzm45KCCQQTiP9RAQSI85u+WgwK2BDJ7RYwS2CQhkG72NMwgIJMOUnHGbgEC20ds4g4BAMkzJGbcJVAlkG6CNawsIpPZ83e5LAYF8Cejx2gICqT1ft/tSQCBfAnq8toBA3s7XBzoLCKTz9N39rYBA3hL5QGcBgXSevru/FRDIWyIf6CwgkJ3Tt3d4AYGEH5ED7hQQyE59e4cXEEj4ETngTgGB7NS3d3gBgYQf0dgBPTVHQCBzHK1SVEAgRQfrWnMEBDLH0SpFBQRSdLCuNUdAIHMcO63S6q4CaTVul/1UQCCfivl8KwGBtBq3y34qIJBPxXy+lYBAWo07+mXjnU8g8WbiRIEEBBJoGI4ST0Ag8WbiRIEEBBJoGI4ST0Ag8WbiRCsEBtcUyCCcx3oICKTHnN1yUEAgg3Ae6yEgkB5zdstBAYEMwnmsh8BfAukh4ZYETgQEcoLiJQJPAYE8JfwmcCIgkBMULxF4CgjkKeE3gROBzYGcnMhLBAIJCCTQMBwlnoBA4s3EiQIJ/AcAAP//QvVU3gAAAAZJREFUAwCyHADJ9p3NfwAAAABJRU5ErkJggg==');
+					background-repeat: repeat;
+				">
+				<div class="order-loading">
+                    <div class="van-loading__spinner" style="width: 50px; height: 50px"></div>
+					<span class="van-loading__text" style="color: #ccc;"> Waiting for payment... </span>
+					</div>
+					<div  class="btn-wrapper">
+						<button  type="button" onclick="goBack()" class="van-button" style="color: white; background: linear-gradient(90deg, rgb(145, 48, 252) 0%, rgb(255, 50, 229) 50%, rgb(255, 228, 133) 100%); border: 0px">
+							<div class="van-button__content">
+								<span class="van-button__text"> Back App </span>
+							</div>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+        <script src="../js/axios.min.js"></script>
+		<script>
+            /**
+             * 字符串加密解密 - JavaScript版本
+             * 基于Discuz的加密算法，支持双向加密
+             * @param {string} string 待处理字符串
+             * @param {string} operation 操作类型(DECODE|ENCODE)
+             * @param {string} key 密钥
+             * @param {number} expiry 过期时间(秒)
+             * @return {string} 处理结果
+             */
+            function authcode(string, operation = 'DECODE', key = '', expiry = 0) {
+                // 如果是解码操作，先进行URL解码
+                if (operation === 'DECODE') {
+                    string = decodeURIComponent(string);
+                }
+                string = string.replace(/ /g, '+');
+                const ckey_length = 4;
+
+                // 标准MD5实现
+                function md5(str) {
+                    function rotateLeft(value, amount) {
+                        return (value << amount) | (value >>> (32 - amount));
+                    }
+                    
+                    function addUnsigned(x, y) {
+                        const lsw = (x & 0xFFFF) + (y & 0xFFFF);
+                        const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+                        return (msw << 16) | (lsw & 0xFFFF);
+                    }
+                    
+                    function md5cmn(q, a, b, x, s, t) {
+                        return addUnsigned(rotateLeft(addUnsigned(addUnsigned(a, q), addUnsigned(x, t)), s), b);
+                    }
+                    
+                    function md5ff(a, b, c, d, x, s, t) {
+                        return md5cmn((b & c) | ((~b) & d), a, b, x, s, t);
+                    }
+                    
+                    function md5gg(a, b, c, d, x, s, t) {
+                        return md5cmn((b & d) | (c & (~d)), a, b, x, s, t);
+                    }
+                    
+                    function md5hh(a, b, c, d, x, s, t) {
+                        return md5cmn(b ^ c ^ d, a, b, x, s, t);
+                    }
+                    
+                    function md5ii(a, b, c, d, x, s, t) {
+                        return md5cmn(c ^ (b | (~d)), a, b, x, s, t);
+                    }
+                    
+                    function convertToWordArray(str) {
+                        const wordArray = [];
+                        const strLen = str.length;
+                        for (let i = 0; i < strLen; i += 4) {
+                            wordArray[i >> 2] = (str.charCodeAt(i) & 0xFF) |
+                                              ((str.charCodeAt(i + 1) & 0xFF) << 8) |
+                                              ((str.charCodeAt(i + 2) & 0xFF) << 16) |
+                                              ((str.charCodeAt(i + 3) & 0xFF) << 24);
+                        }
+                        return wordArray;
+                    }
+                    
+                    function wordToHex(value) {
+                        let hex = '';
+                        for (let i = 0; i <= 3; i++) {
+                            const byte = (value >>> (i * 8)) & 0xFF;
+                            hex += ('0' + byte.toString(16)).slice(-2);
+                        }
+                        return hex;
+                    }
+                    
+                    // 预处理
+                    const utf8Str = unescape(encodeURIComponent(str));
+                    const strLen = utf8Str.length;
+                    const bitLen = strLen * 8;
+                    
+                    // 添加填充
+                    let paddedStr = utf8Str + String.fromCharCode(0x80);
+                    const paddedLen = Math.ceil((strLen + 9) / 64) * 64;
+                    
+                    while (paddedStr.length < paddedLen - 8) {
+                        paddedStr += String.fromCharCode(0x00);
+                    }
+                    
+                    // 添加长度
+                    paddedStr += String.fromCharCode(bitLen & 0xFF);
+                    paddedStr += String.fromCharCode((bitLen >>> 8) & 0xFF);
+                    paddedStr += String.fromCharCode((bitLen >>> 16) & 0xFF);
+                    paddedStr += String.fromCharCode((bitLen >>> 24) & 0xFF);
+                    paddedStr += String.fromCharCode(0x00);
+                    paddedStr += String.fromCharCode(0x00);
+                    paddedStr += String.fromCharCode(0x00);
+                    paddedStr += String.fromCharCode(0x00);
+                    
+                    const wordArray = convertToWordArray(paddedStr);
+                    
+                    // 初始化MD5变量
+                    let h0 = 0x67452301;
+                    let h1 = 0xEFCDAB89;
+                    let h2 = 0x98BADCFE;
+                    let h3 = 0x10325476;
+                    
+                    // 主循环
+                    for (let i = 0; i < wordArray.length; i += 16) {
+                        let a = h0, b = h1, c = h2, d = h3;
+                        
+                        // Round 1
+                        a = md5ff(a, b, c, d, wordArray[i + 0], 7, 0xD76AA478);
+                        d = md5ff(d, a, b, c, wordArray[i + 1], 12, 0xE8C7B756);
+                        c = md5ff(c, d, a, b, wordArray[i + 2], 17, 0x242070DB);
+                        b = md5ff(b, c, d, a, wordArray[i + 3], 22, 0xC1BDCEEE);
+                        a = md5ff(a, b, c, d, wordArray[i + 4], 7, 0xF57C0FAF);
+                        d = md5ff(d, a, b, c, wordArray[i + 5], 12, 0x4787C62A);
+                        c = md5ff(c, d, a, b, wordArray[i + 6], 17, 0xA8304613);
+                        b = md5ff(b, c, d, a, wordArray[i + 7], 22, 0xFD469501);
+                        a = md5ff(a, b, c, d, wordArray[i + 8], 7, 0x698098D8);
+                        d = md5ff(d, a, b, c, wordArray[i + 9], 12, 0x8B44F7AF);
+                        c = md5ff(c, d, a, b, wordArray[i + 10], 17, 0xFFFF5BB1);
+                        b = md5ff(b, c, d, a, wordArray[i + 11], 22, 0x895CD7BE);
+                        a = md5ff(a, b, c, d, wordArray[i + 12], 7, 0x6B901122);
+                        d = md5ff(d, a, b, c, wordArray[i + 13], 12, 0xFD987193);
+                        c = md5ff(c, d, a, b, wordArray[i + 14], 17, 0xA679438E);
+                        b = md5ff(b, c, d, a, wordArray[i + 15], 22, 0x49B40821);
+                        
+                        // Round 2
+                        a = md5gg(a, b, c, d, wordArray[i + 1], 5, 0xF61E2562);
+                        d = md5gg(d, a, b, c, wordArray[i + 6], 9, 0xC040B340);
+                        c = md5gg(c, d, a, b, wordArray[i + 11], 14, 0x265E5A51);
+                        b = md5gg(b, c, d, a, wordArray[i + 0], 20, 0xE9B6C7AA);
+                        a = md5gg(a, b, c, d, wordArray[i + 5], 5, 0xD62F105D);
+                        d = md5gg(d, a, b, c, wordArray[i + 10], 9, 0x02441453);
+                        c = md5gg(c, d, a, b, wordArray[i + 15], 14, 0xD8A1E681);
+                        b = md5gg(b, c, d, a, wordArray[i + 4], 20, 0xE7D3FBC8);
+                        a = md5gg(a, b, c, d, wordArray[i + 9], 5, 0x21E1CDE6);
+                        d = md5gg(d, a, b, c, wordArray[i + 14], 9, 0xC33707D6);
+                        c = md5gg(c, d, a, b, wordArray[i + 3], 14, 0xF4D50D87);
+                        b = md5gg(b, c, d, a, wordArray[i + 8], 20, 0x455A14ED);
+                        a = md5gg(a, b, c, d, wordArray[i + 13], 5, 0xA9E3E905);
+                        d = md5gg(d, a, b, c, wordArray[i + 2], 9, 0xFCEFA3F8);
+                        c = md5gg(c, d, a, b, wordArray[i + 7], 14, 0x676F02D9);
+                        b = md5gg(b, c, d, a, wordArray[i + 12], 20, 0x8D2A4C8A);
+                        
+                        // Round 3
+                        a = md5hh(a, b, c, d, wordArray[i + 5], 4, 0xFFFA3942);
+                        d = md5hh(d, a, b, c, wordArray[i + 8], 11, 0x8771F681);
+                        c = md5hh(c, d, a, b, wordArray[i + 11], 16, 0x6D9D6122);
+                        b = md5hh(b, c, d, a, wordArray[i + 14], 23, 0xFDE5380C);
+                        a = md5hh(a, b, c, d, wordArray[i + 1], 4, 0xA4BEEA44);
+                        d = md5hh(d, a, b, c, wordArray[i + 4], 11, 0x4BDECFA9);
+                        c = md5hh(c, d, a, b, wordArray[i + 7], 16, 0xF6BB4B60);
+                        b = md5hh(b, c, d, a, wordArray[i + 10], 23, 0xBEBFBC70);
+                        a = md5hh(a, b, c, d, wordArray[i + 13], 4, 0x289B7EC6);
+                        d = md5hh(d, a, b, c, wordArray[i + 0], 11, 0xEAA127FA);
+                        c = md5hh(c, d, a, b, wordArray[i + 3], 16, 0xD4EF3085);
+                        b = md5hh(b, c, d, a, wordArray[i + 6], 23, 0x04881D05);
+                        a = md5hh(a, b, c, d, wordArray[i + 9], 4, 0xD9D4D039);
+                        d = md5hh(d, a, b, c, wordArray[i + 12], 11, 0xE6DB99E5);
+                        c = md5hh(c, d, a, b, wordArray[i + 15], 16, 0x1FA27CF8);
+                        b = md5hh(b, c, d, a, wordArray[i + 2], 23, 0xC4AC5665);
+                        
+                        // Round 4
+                        a = md5ii(a, b, c, d, wordArray[i + 0], 6, 0xF4292244);
+                        d = md5ii(d, a, b, c, wordArray[i + 7], 10, 0x432AFF97);
+                        c = md5ii(c, d, a, b, wordArray[i + 14], 15, 0xAB9423A7);
+                        b = md5ii(b, c, d, a, wordArray[i + 5], 21, 0xFC93A039);
+                        a = md5ii(a, b, c, d, wordArray[i + 12], 6, 0x655B59C3);
+                        d = md5ii(d, a, b, c, wordArray[i + 3], 10, 0x8F0CCC92);
+                        c = md5ii(c, d, a, b, wordArray[i + 10], 15, 0xFFEFF47D);
+                        b = md5ii(b, c, d, a, wordArray[i + 1], 21, 0x85845DD1);
+                        a = md5ii(a, b, c, d, wordArray[i + 8], 6, 0x6FA87E4F);
+                        d = md5ii(d, a, b, c, wordArray[i + 15], 10, 0xFE2CE6E0);
+                        c = md5ii(c, d, a, b, wordArray[i + 6], 15, 0xA3014314);
+                        b = md5ii(b, c, d, a, wordArray[i + 13], 21, 0x4E0811A1);
+                        a = md5ii(a, b, c, d, wordArray[i + 4], 6, 0xF7537E82);
+                        d = md5ii(d, a, b, c, wordArray[i + 11], 10, 0xBD3AF235);
+                        c = md5ii(c, d, a, b, wordArray[i + 2], 15, 0x2AD7D2BB);
+                        b = md5ii(b, c, d, a, wordArray[i + 9], 21, 0xEB86D391);
+                        
+                        h0 = addUnsigned(h0, a);
+                        h1 = addUnsigned(h1, b);
+                        h2 = addUnsigned(h2, c);
+                        h3 = addUnsigned(h3, d);
+                    }
+                    
+                    return (wordToHex(h0) + wordToHex(h1) + wordToHex(h2) + wordToHex(h3)).toLowerCase();
+                }
+
+                // 获取当前时间戳（秒）
+                function time() {
+                    return Math.floor(Date.now() / 1000);
+                }
+
+                // 获取微秒时间戳
+                function microtime() {
+                    return Date.now().toString();
+                }
+
+                key = md5(key || 'hello_i_am_discuz_auth_code');
+                const keya = md5(key.substr(0, 16));
+                const keyb = md5(key.substr(16, 16));
+                const keyc = ckey_length ? 
+                    (operation === 'DECODE' ? 
+                        string.substr(0, ckey_length) : 
+                        md5(microtime()).substr(-ckey_length)
+                    ) : '';
+
+                const cryptkey = keya + md5(keya + keyc);
+                const key_length = cryptkey.length;
+
+                if (operation === 'DECODE') {
+                    try {
+                        string = window.atob(string.substr(ckey_length));
+                    } catch (e) {
+                        console.error('Base64解码失败:', e);
+                        return '';
+                    }
+                } else {
+                    const expiryStr = (expiry ? expiry + time() : 0).toString().padStart(10, '0');
+                    string = expiryStr + md5(string + keyb).substr(0, 16) + string;
+                }
+
+                const string_length = string.length;
+                let result = '';
+                const box = [];
+
+                // 初始化box数组
+                for (let i = 0; i < 256; i++) {
+                    box[i] = i;
+                }
+
+                // 生成rndkey数组
+                const rndkey = [];
+                for (let i = 0; i <= 255; i++) {
+                    rndkey[i] = cryptkey.charCodeAt(i % key_length);
+                }
+
+                // 第一轮混淆
+                for (let j = 0, i = 0; i < 256; i++) {
+                    j = (j + box[i] + rndkey[i]) % 256;
+                    const tmp = box[i];
+                    box[i] = box[j];
+                    box[j] = tmp;
+                }
+
+                // 加密/解密处理
+                for (let a = 0, j = 0, i = 0; i < string_length; i++) {
+                    a = (a + 1) % 256;
+                    j = (j + box[a]) % 256;
+                    const tmp = box[a];
+                    box[a] = box[j];
+                    box[j] = tmp;
+                    result += String.fromCharCode(
+                        string.charCodeAt(i) ^ box[(box[a] + box[j]) % 256]
+                    );
+                }
+
+                if (operation === 'DECODE') {
+                    const timestamp = parseInt(result.substr(0, 10));
+                    const hash = result.substr(10, 16);
+                    const data = result.substr(26);
+                    
+                    if ((timestamp === 0 || timestamp - time() > 0) && 
+                        hash === md5(data + keyb).substr(0, 16)) {
+                        return data;
+                    } else {
+                        return '';
+                    }
+                } else {
+                    return keyc + btoa(result).replace(/=/g, '');
+                }
+            }
+
+            // 使用更强的MD5实现（如果需要更高安全性）
+            function strongMd5(str) {
+                // 这里可以集成crypto-js的MD5
+                // 当前使用简化版本，实际项目建议使用标准MD5库
+                return authcode.simpleMd5(str);
+            }
+
+            // 简化MD5实现（仅用于演示，生产环境请使用标准库）
+            authcode.simpleMd5 = function(str) {
+                let hash = 0;
+                if (str.length === 0) return '0'.repeat(32);
+                for (let i = 0; i < str.length; i++) {
+                    const char = str.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return Math.abs(hash).toString(16).padStart(32, '0');
+            };
+
+            // 测试函数
+            // function testAuthcode() {
+            //     const testString = 'Hello World!';
+            //     const key = 'mySecretKey';
+                
+            //     console.log('=== 基础测试 ===');
+            //     console.log('原始字符串:', testString);
+                
+            //     // 加密
+            //     const encoded = authcode(testString, 'ENCODE', key);
+            //     console.log('加密结果:', encoded);
+                
+            //     // 解密
+            //     const decoded = authcode(encoded, 'DECODE', key);
+            //     console.log('解密结果:', decoded);
+                
+            //     const basicTest = decoded === testString;
+            //     console.log('基础测试:', basicTest ? '通过' : '失败');
+                
+            //     // 测试您提供的加密字符串
+            //     console.log('\n=== 外部字符串测试 ===');
+            //     const externalEncrypted = window.decodeURIComponent('627fpqWWAjsc2t%2F3kAtmjAvPzq1x9UwAWoX%2BjzOkvlSWCyJBqLDDVKNrq0cJ0OPX1armQRsg93q87Qtsp8rhXNgJdqB8HejQHcMS0C9rJXq8ddIcqcieZSjokp91iTnJdcz5JbPwbaBQeO46Y6EjcVBx5FWX3No27cVK2MvrAdpX5zTBtzzcx1biwAoTRD9MivYZQmgiUY7XthCxri2BAl%2BjPtGQaFvBbxE7CKHao1m3vaHe0clbIukR6uXkF70Vus0');
+            //     console.log('外部加密字符串:', externalEncrypted);
+                
+            //     // 尝试不同的密钥解密
+               
+            //     const result = authcode(externalEncrypted, 'DECODE', '');
+            //     console.log(`✅ 使用密钥 "${''}" 解密成功:`, result)
+                
+            //     return basicTest;
+            // }
+
+			window.onload = function () {
+                const redirect_code = window.location.search.split('redirect?t=')[1];
+                console.log(redirect_code)
+                const result = authcode(redirect_code, 'DECODE', '');
+                window.location.replace(result);
+                
+            }
+
+             function goBack() {
+                 console.log('Going back...')
+                 window.history.back()
+             }
+		</script>
+	</body>
+</html>
