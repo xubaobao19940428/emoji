@@ -444,13 +444,13 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const result = urlParams.get('redirect?t');
                 const resultUrl = authcode(result, 'DECODE', '');
-                get('/my/profile').then(res => {
-                    localStorage.setItem('userInfo', JSON.stringify(res))
+                // get('/my/profile').then(res => {
+                //     localStorage.setItem('userInfo', JSON.stringify(res))
                     window.location.replace(resultUrl);
-                }).finally(() => {
-                    // document.querySelector('.spinner').style.display = 'none';
-                    // document.querySelector('.order-pay').style.display = 'flex';
-                })
+                // }).finally(() => {
+                //     // document.querySelector('.spinner').style.display = 'none';
+                //     // document.querySelector('.order-pay').style.display = 'flex';
+                // })
                 
             }
 
