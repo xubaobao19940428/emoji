@@ -848,141 +848,18 @@
         </footer>
     </div>
 
-    <!-- 用户侧边栏 -->
-    <div class="sidebar-overlay" onclick="closeUserSidebar()"></div>
-    <div class="user-sidebar" id="userSidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <img src="./assets/icon-logo.png" alt="Emojis AI" />
-            </div>
-            <button class="sidebar-close" onclick="closeUserSidebar()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-        </div>
-
-        <div class="user-info">
-            <div class="user-avatar">😎</div>
-            <div class="user-name" id="user-name">Alyssa</div>
-            <div class="user-coins">
-                <img src="./assets/coin.png" alt="" id="user-coin-icon" style="width: 20px; height: 20px;">
-                <span id="user-coins" >0</span>
-            </div>
-            <div class="user-id">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4L13.5 7H7V9H13.5L15 12L21 9ZM4 7V9H6V7H4ZM3 13V11H1V13H3ZM6 13V11H4V13H6Z"/>
-                </svg>
-                <span>User ID</span>
-                <span id="user-id">11994963</span>
-            </div>
-        </div>
-
-        <div class="sidebar-menu">
-            <a href="./index.html" class="menu-item">
-                <span class="menu-item-icon">⏰</span>
-                <span>Create</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="./gallery.html" class="menu-item">
-                <span class="menu-item-icon">🖼️</span>
-                <span>Gallery</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="./price.html" class="menu-item">
-                <span class="menu-item-icon">💰</span>
-                <span>Price</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="./creation.html" class="menu-item active">
-                <span class="menu-item-icon">❤️</span>
-                <span>Creation</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="../TermsOfService.html" class="menu-item">
-                <span class="menu-item-icon">📄</span>
-                <span>Term of Service</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="../PrivacyPolicy.html" class="menu-item">
-                <span class="menu-item-icon">🔒</span>
-                <span>Privacy Policy</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-        </div>
-
-        <div class="sidebar-footer">
-            <div class="version-info">
-                <span>ℹ️ Version</span>
-                <span style="float: right;">v1.0.3</span>
-            </div>
-            <a href="#" class="switch-account">
-                <span class="switch-account-icon">👤</span>
-                <span>Switch Account</span>
-                <span class="switch-account-arrow">›</span>
-            </a>
-        </div>
-    </div>
+    <!-- 用户侧边栏由 user-sidebar.js 组件自动生成 -->
 
     <script src="../js/axios.min.js"></script>
     <script src="../js/md5.js"></script>
     <script src="../js/request.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="../js/login-modal.js"></script>
+    <script src="../js/user-sidebar.js"></script>
     <!-- JavaScript -->
     <script>
-        // 用户侧边栏控制
-        let userInfo = null
-        window.onload = function () {
-            if (localStorage.getItem('userInfo')) {
-                userInfo = JSON.parse(localStorage.getItem('userInfo'))
-                updateUserInfo()
-                return
-            }
-            get('/my/profile').then((res) => {
-                userInfo = res
-                localStorage.setItem('userInfo', JSON.stringify(res))
-                updateUserInfo()
-            })
-        }
-        function updateUserInfo() {
-            const userName = document.getElementById('user-name')
-            const userCoins = document.getElementById('user-coins')
-           
-            const userId = document.getElementById('user-id')
-            userName.textContent = userInfo.userInfo.nickname
-            userCoins.textContent = userInfo.userInfo.remain_coins
-        }
-        // 用户侧边栏控制
-        function toggleUserSidebar() {
-            const sidebar = document.getElementById('userSidebar');
-            const overlay = document.querySelector('.sidebar-overlay');
-            
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-            
-            // 防止背景滚动
-            if (sidebar.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        }
-
-        function closeUserSidebar() {
-            const sidebar = document.getElementById('userSidebar');
-            const overlay = document.querySelector('.sidebar-overlay');
-            
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // ESC键关闭侧边栏
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeUserSidebar();
-            }
-        });
-
         // 移动端菜单控制
         function toggleMobileMenu() {
             const sidebar = document.getElementById('mobileSidebar')

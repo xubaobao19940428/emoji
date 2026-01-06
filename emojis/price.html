@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Price - Emojis AI</title>
-    <link rel="icon" href="../images/favicon.png" type="image/png">
+		<link rel="icon" href="../images/favicon.png" type="image/png" />
     
     <!-- 外部样式 -->
-    <link rel="stylesheet" href="../bootstrap.min.css">
-    <link rel="stylesheet" href="../fontawesome.min.css">
-    <link rel="stylesheet" href="../style.css">
+		<link rel="stylesheet" href="../bootstrap.min.css" />
+		<link rel="stylesheet" href="../fontawesome.min.css" />
+		<link rel="stylesheet" href="../style.css" />
     
     <!-- 自定义样式 -->
     <style>
@@ -103,185 +103,7 @@
             box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
         }
 
-        /* 用户侧边栏样式 */
-        .user-sidebar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 350px;
-            height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            backdrop-filter: blur(20px);
-            border-left: 1px solid rgba(255, 255, 255, 0.1);
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-
-        .user-sidebar.active {
-            transform: translateX(0);
-        }
-
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-close {
-            background: transparent;
-            border: none;
-            color: var(--color-white);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
-
-        .sidebar-close:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .user-info {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #00ff88, #00ccff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 24px;
-        }
-
-        .user-name {
-            color: var(--color-white);
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .user-coins {
-            color: #ccff02;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
-        .user-id {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .sidebar-menu {
-            flex: 1;
-            padding: 20px 0;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 16px 20px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .menu-item:hover,
-        .menu-item.active {
-            color: var(--primary-color);
-            background: rgba(204, 255, 2, 0.1);
-            border-left-color: var(--primary-color);
-        }
-
-        .menu-item-icon {
-            margin-right: 12px;
-            font-size: 18px;
-        }
-
-        .menu-item-arrow {
-            margin-left: auto;
-            font-size: 14px;
-        }
-
-        .sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .version-info {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        .switch-account {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .switch-account:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .switch-account-icon {
-            margin-right: 8px;
-        }
-
-        .switch-account-arrow {
-            margin-left: auto;
-        }
+			/* 用户侧边栏样式由 user-sidebar.js 组件提供 */
 
         /* 移动端菜单按钮 */
         .mobile-menu-btn {
@@ -447,7 +269,8 @@
             font-size: 14px;
         }
 
-        .pro-icon, .pro-emoji {
+			.pro-icon,
+			.pro-emoji {
             font-size: 16px;
         }
 
@@ -765,6 +588,449 @@
                 padding: 20px;
             }
         }
+
+			/* 加载状态样式 */
+			.pricing-loading {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				padding: 60px 20px;
+				color: rgba(255, 255, 255, 0.7);
+			}
+
+			.loading-spinner {
+				width: 40px;
+				height: 40px;
+				border: 3px solid rgba(255, 255, 255, 0.1);
+				border-top-color: #ccff02;
+				border-radius: 50%;
+				animation: spin 1s linear infinite;
+				margin-bottom: 16px;
+			}
+
+			@keyframes spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+
+			/* 折扣标签 */
+			.discount-badge {
+				background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+				color: #fff;
+				padding: 2px 8px;
+				border-radius: 10px;
+				font-size: 11px;
+				font-weight: 700;
+				margin-left: 8px;
+			}
+
+			/* 原价样式 */
+			.original-price {
+				color: rgba(255, 255, 255, 0.4);
+				font-size: 14px;
+				text-decoration: line-through;
+				margin-right: 8px;
+			}
+
+			/* 钻石图标样式 */
+			.coins-icon {
+				display: inline-flex;
+				align-items: center;
+				gap: 4px;
+			}
+
+			.coins-icon img {
+				width: 18px;
+				height: 18px;
+			}
+
+			/* 加载失败样式 */
+			.pricing-error {
+				text-align: center;
+				padding: 40px 20px;
+				color: rgba(255, 255, 255, 0.7);
+			}
+
+			.pricing-error button {
+				margin-top: 16px;
+				padding: 10px 24px;
+				background: rgba(255, 255, 255, 0.1);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				border-radius: 20px;
+				color: #fff;
+				cursor: pointer;
+				transition: all 0.3s ease;
+			}
+
+			.pricing-error button:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
+
+			/* 支付渠道弹窗样式 */
+			.channel-modal-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.7);
+				backdrop-filter: blur(8px);
+				z-index: 10001;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				opacity: 0;
+				visibility: hidden;
+				transition: all 0.3s ease;
+			}
+
+			.channel-modal-overlay.active {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			.channel-modal {
+				background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+				border-radius: 24px;
+				width: 90%;
+				max-width: 480px;
+				max-height: 80vh;
+				overflow: hidden;
+				transform: scale(0.9) translateY(20px);
+				transition: transform 0.3s ease;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+			}
+
+			.channel-modal-overlay.active .channel-modal {
+				transform: scale(1) translateY(0);
+			}
+
+			.channel-modal-header {
+				padding: 20px 24px;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.channel-modal-title {
+				color: #fff;
+				font-size: 18px;
+				font-weight: 700;
+				margin: 0;
+			}
+
+			.channel-modal-close {
+				background: transparent;
+				border: none;
+				color: rgba(255, 255, 255, 0.6);
+				cursor: pointer;
+				padding: 8px;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+			}
+
+			.channel-modal-close:hover {
+				background: rgba(255, 255, 255, 0.1);
+				color: #fff;
+			}
+
+			.channel-modal-product {
+				padding: 16px 24px;
+				background: rgba(204, 255, 2, 0.1);
+				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+
+			.channel-modal-product-info {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			.channel-modal-product-info img {
+				width: 24px;
+				height: 24px;
+			}
+
+			.channel-modal-product-name {
+				color: #fff;
+				font-weight: 600;
+			}
+
+			.channel-modal-product-price {
+				color: #ccff02;
+				font-weight: 700;
+				font-size: 18px;
+			}
+
+			.channel-modal-body {
+				padding: 16px 24px;
+				max-height: 400px;
+				overflow-y: auto;
+			}
+
+			.channel-list {
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+			}
+
+			.channel-item {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+				padding: 16px;
+				background: rgba(255, 255, 255, 0.05);
+				border: 2px solid rgba(255, 255, 255, 0.1);
+				border-radius: 16px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+			}
+
+			.channel-item:hover {
+				border-color: rgba(255, 255, 255, 0.3);
+				background: rgba(255, 255, 255, 0.08);
+			}
+
+			.channel-item.selected {
+				border-color: #ccff02;
+				background: rgba(204, 255, 2, 0.1);
+			}
+
+			.channel-icon {
+				width: 48px;
+				height: 48px;
+				border-radius: 12px;
+				background: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+				flex-shrink: 0;
+			}
+
+			.channel-icon img {
+				width: 36px;
+				height: 36px;
+				object-fit: contain;
+			}
+
+			.channel-info {
+				flex: 1;
+			}
+
+			.channel-name {
+				color: #fff;
+				font-weight: 600;
+				font-size: 16px;
+				margin-bottom: 4px;
+			}
+
+			.channel-desc {
+				color: rgba(255, 255, 255, 0.5);
+				font-size: 13px;
+			}
+
+			.channel-radio {
+				width: 22px;
+				height: 22px;
+				border: 2px solid rgba(255, 255, 255, 0.3);
+				border-radius: 50%;
+				position: relative;
+				transition: all 0.3s ease;
+				flex-shrink: 0;
+			}
+
+			.channel-item.selected .channel-radio {
+				border-color: #ccff02;
+			}
+
+			.channel-item.selected .channel-radio::after {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 10px;
+				height: 10px;
+				background: #ccff02;
+				border-radius: 50%;
+				transform: translate(-50%, -50%);
+			}
+
+			.channel-safe-badge {
+				background: linear-gradient(45deg, #00ff88, #00ccff);
+				color: #000;
+				padding: 2px 8px;
+				border-radius: 8px;
+				font-size: 10px;
+				font-weight: 700;
+				margin-left: 8px;
+			}
+
+			.channel-modal-footer {
+				padding: 16px 24px;
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+			}
+
+			.channel-pay-btn {
+				width: 100%;
+				padding: 16px;
+				background: linear-gradient(90deg, #00ff88 0%, #ccff02 100%);
+				border: none;
+				border-radius: 50px;
+				color: #000;
+				font-size: 16px;
+				font-weight: 700;
+				cursor: pointer;
+				transition: all 0.3s ease;
+			}
+
+			.channel-pay-btn:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 8px 25px rgba(204, 255, 2, 0.3);
+			}
+
+			.channel-pay-btn:disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
+				transform: none;
+			}
+
+			.channel-loading {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				padding: 40px 20px;
+				color: rgba(255, 255, 255, 0.7);
+			}
+
+			/* 支付状态确认弹窗样式 */
+			.payment-status-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.7);
+				backdrop-filter: blur(8px);
+				z-index: 10002;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				opacity: 0;
+				visibility: hidden;
+				transition: all 0.3s ease;
+			}
+
+			.payment-status-overlay.active {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			.payment-status-modal {
+				background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+				border-radius: 24px;
+				width: 90%;
+				max-width: 420px;
+				overflow: hidden;
+				transform: scale(0.9) translateY(20px);
+				transition: transform 0.3s ease;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+			}
+
+			.payment-status-overlay.active .payment-status-modal {
+				transform: scale(1) translateY(0);
+			}
+
+			.payment-status-header {
+				padding: 24px 24px 16px;
+				text-align: center;
+				position: relative;
+			}
+
+			.payment-status-close {
+				position: absolute;
+				top: 16px;
+				right: 16px;
+				background: transparent;
+				border: none;
+				color: rgba(255, 255, 255, 0.6);
+				cursor: pointer;
+				padding: 8px;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+			}
+
+			.payment-status-close:hover {
+				background: rgba(255, 255, 255, 0.1);
+				color: #fff;
+			}
+
+			.payment-status-title {
+				color: #fff;
+				font-size: 20px;
+				font-weight: 700;
+				margin: 0 0 12px 0;
+			}
+
+			.payment-status-desc {
+				color: rgba(255, 255, 255, 0.6);
+				font-size: 14px;
+				margin: 0;
+			}
+
+			.payment-status-body {
+				padding: 16px 24px 24px;
+			}
+
+			.payment-status-buttons {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 12px;
+			}
+
+			.payment-status-btn {
+				padding: 14px 16px;
+				border-radius: 12px;
+				font-size: 14px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				border: none;
+			}
+
+			.payment-status-btn.primary {
+				background: linear-gradient(90deg, #ff6b9d 0%, #ffa726 100%);
+				color: #fff;
+			}
+
+			.payment-status-btn.primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+			}
+
+			.payment-status-btn.secondary {
+				background: rgba(255, 255, 255, 0.1);
+				color: #fff;
+				border: 1px solid rgba(255, 255, 255, 0.2);
+			}
+
+			.payment-status-btn.secondary:hover {
+				background: rgba(255, 255, 255, 0.15);
+			}
+
+			.payment-status-btn:disabled {
+				opacity: 0.6;
+				cursor: not-allowed;
+			}
     </style>
 </head>
 <body>
@@ -805,7 +1071,7 @@
                     </div>
                     <button class="mobile-close-btn" onclick="closeMobileMenu()">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+								<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                         </svg>
                     </button>
                 </div>
@@ -837,72 +1103,16 @@
                 </div>
 
                 <!-- 价格方案 -->
-                <div class="pricing-plans">
-                    <!-- One Week -->
-                    <div class="pricing-plan recommended" onclick="selectPlan(this)">
-                        <div class="plan-left">
-                            <div class="plan-radio"></div>
-                            <div class="plan-info">
-                                <h3>One Week</h3>
-                                <p>One Week website membership benefits</p>
-                            </div>
-                        </div>
-                        <div class="plan-price">
-                            <div class="price">$9.9</div>
-                            <div class="period">One Week</div>
-                        </div>
-                    </div>
-
-                    <!-- One Month -->
-                    <div class="pricing-plan" onclick="selectPlan(this)">
-                        <div class="plan-left">
-                            <div class="plan-radio"></div>
-                            <div class="plan-info">
-                                <h3>One Month</h3>
-                                <p>One Month website membership benefits</p>
-                            </div>
-                        </div>
-                        <div class="plan-price">
-                            <div class="price">$39.9</div>
-                            <div class="period">One Month</div>
-                        </div>
-                    </div>
-
-                    <!-- One Year -->
-                    <div class="pricing-plan" onclick="selectPlan(this)">
-                        <div class="plan-left">
-                            <div class="plan-radio"></div>
-                            <div class="plan-info">
-                                <h3>One Year</h3>
-                                <p>One Year website membership benefits</p>
-                            </div>
-                        </div>
-                        <div class="plan-price">
-                            <div class="price">$79.9</div>
-                            <div class="period">One Year</div>
-                        </div>
-                    </div>
-
-                    <!-- Lifetime -->
-                    <div class="pricing-plan" onclick="selectPlan(this)">
-                        <div class="plan-left">
-                            <div class="plan-radio"></div>
-                            <div class="plan-info">
-                                <h3>Lifetime</h3>
-                                <p>Lifetime website membership benefits</p>
-                            </div>
-                        </div>
-                        <div class="plan-price">
-                            <div class="price">$79.9</div>
-                            <div class="period">Lifetime</div>
-                        </div>
+					<div class="pricing-plans" id="pricingPlans">
+						<!-- 加载状态 -->
+						<div class="pricing-loading" id="pricingLoading">
+							<div class="loading-spinner"></div>
+							<p>Loading plans...</p>
                     </div>
                 </div>
 
                 <!-- 购买按钮 -->
-                <button class="buy-button" onclick="buyNow()">
-                    Buy Now
-                </button>
+					<button class="buy-button" onclick="buyNow()">Buy Now</button>
             </div>
         </main>
 
@@ -912,9 +1122,7 @@
                 <div role="separator" class="van-divider van-divider--hairline footer-bar-divider"><!----></div>
                 <div class="footer-bar-content">
                     <div class="col-lg-6 col-md-6">
-                        <p class="footer__copyright mb-15">
-                            ©2025 Emoji.ai All Right By <a class="footer__copyright-link" href="/">Emojis AI</a>.
-                        </p>
+							<p class="footer__copyright mb-15">©2025 Emoji.ai All Right By <a class="footer__copyright-link" href="/">Emojis AI</a>.</p>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="footer__links mb-15">
@@ -928,79 +1136,58 @@
         </footer>
     </div>
 
-    <!-- 用户侧边栏 -->
-    <div class="sidebar-overlay" onclick="closeUserSidebar()"></div>
-    <div class="user-sidebar" id="userSidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <img src="./assets/icon-logo.png" alt="Emojis AI" />
-            </div>
-            <button class="sidebar-close" onclick="closeUserSidebar()">
+		<!-- 用户侧边栏由 user-sidebar.js 组件自动生成 -->
+
+		<!-- 支付状态确认弹窗 -->
+		<div class="payment-status-overlay" id="paymentStatusModal">
+			<div class="payment-status-modal">
+				<div class="payment-status-header">
+					<h3 class="payment-status-title">Payment Status</h3>
+					<p class="payment-status-desc">Have you completed the payment?</p>
+					<button class="payment-status-close" onclick="closePaymentStatusModal()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                 </svg>
             </button>
         </div>
-
-        <div class="user-info">
-            <div class="user-avatar">😎</div>
-            <div class="user-name" id="user-name">Alyssa</div>
-            <div class="user-coins">
-                <img src="./assets/coin.png" alt="" id="user-coin-icon" style="width: 20px; height: 20px;">
-                <span id="user-coins" >0</span>
+				<div class="payment-status-body">
+					<div class="payment-status-buttons">
+						<button class="payment-status-btn primary" id="btnPurchased" onclick="handlePurchased()">Purchased</button>
+						<button class="payment-status-btn secondary" onclick="handleTooExpensive()">Too Expensive</button>
+						<button class="payment-status-btn secondary" onclick="handlePaymentIssue()">Payment Issue</button>
+						<button class="payment-status-btn secondary" onclick="handlePayLater()">Pay Later</button>
             </div>
-            <div class="user-id">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4L13.5 7H7V9H13.5L15 12L21 9ZM4 7V9H6V7H4ZM3 13V11H1V13H3ZM6 13V11H4V13H6Z"/>
-                </svg>
-                <span>User ID</span>
-                <span id="user-id">11994963</span>
             </div>
         </div>
-
-        <div class="sidebar-menu">
-            <a href="./index.html" class="menu-item">
-                <span class="menu-item-icon">⏰</span>
-                <span>Create</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="./gallery.html" class="menu-item">
-                <span class="menu-item-icon">🖼️</span>
-                <span>Gallery</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="./price.html" class="menu-item active">
-                <span class="menu-item-icon">💰</span>
-                <span>Price</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="./creation.html" class="menu-item">
-                <span class="menu-item-icon">❤️</span>
-                <span>Creation</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="../TermsOfService.html" class="menu-item">
-                <span class="menu-item-icon">📄</span>
-                <span>Term of Service</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
-            <a href="../PrivacyPolicy.html" class="menu-item">
-                <span class="menu-item-icon">🔒</span>
-                <span>Privacy Policy</span>
-                <span class="menu-item-arrow">›</span>
-            </a>
         </div>
 
-        <div class="sidebar-footer">
-            <div class="version-info">
-                <span>ℹ️ Version</span>
-                <span style="float: right;">v1.0.3</span>
+		<!-- 支付渠道选择弹窗 -->
+		<div class="channel-modal-overlay" id="channelModal">
+			<div class="channel-modal">
+				<div class="channel-modal-header">
+					<h3 class="channel-modal-title">Select Payment Method</h3>
+					<button class="channel-modal-close" onclick="closeChannelModal()">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+						</svg>
+					</button>
             </div>
-            <a href="#" class="switch-account">
-                <span class="switch-account-icon">👤</span>
-                <span>Switch Account</span>
-                <span class="switch-account-arrow">›</span>
-            </a>
+				<div class="channel-modal-product" id="channelModalProduct">
+					<div class="channel-modal-product-info">
+						<img src="./assets/coin.png" alt="coins" />
+						<span class="channel-modal-product-name" id="channelProductName">-</span>
+					</div>
+					<span class="channel-modal-product-price" id="channelProductPrice">$0</span>
+				</div>
+				<div class="channel-modal-body" id="channelModalBody">
+					<div class="channel-loading">
+						<div class="loading-spinner"></div>
+						<p>Loading payment methods...</p>
+					</div>
+				</div>
+				<div class="channel-modal-footer">
+					<button class="channel-pay-btn" id="channelPayBtn" onclick="confirmPayment()" disabled>Confirm Payment</button>
+				</div>
         </div>
     </div>
 
@@ -1008,60 +1195,12 @@
     <script src="../js/axios.min.js"></script>
     <script src="../js/md5.js"></script>
     <script src="../js/request.js"></script>
+		<!-- Firebase SDK -->
+		<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+		<script src="../js/login-modal.js"></script>
+		<script src="../js/user-sidebar.js"></script>
     <script>
-        let userInfo = null
-        window.onload = function () {
-            if (localStorage.getItem('userInfo')) {
-                userInfo = JSON.parse(localStorage.getItem('userInfo'))
-                updateUserInfo()
-                return
-            }
-            get('/my/profile').then((res) => {
-                userInfo = res
-                localStorage.setItem('userInfo', JSON.stringify(res))
-                updateUserInfo()
-            })
-        }
-        // 用户侧边栏控制
-        function updateUserInfo() {
-            const userName = document.getElementById('user-name')
-            const userCoins = document.getElementById('user-coins')
-           
-            const userId = document.getElementById('user-id')
-            userName.textContent = userInfo.userInfo.nickname
-            userCoins.textContent = userInfo.userInfo.remain_coins
-        }
-        function toggleUserSidebar() {
-            const sidebar = document.getElementById('userSidebar');
-            const overlay = document.querySelector('.sidebar-overlay');
-            
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-            
-            // 防止背景滚动
-            if (sidebar.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        }
-
-        function closeUserSidebar() {
-            const sidebar = document.getElementById('userSidebar');
-            const overlay = document.querySelector('.sidebar-overlay');
-            
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // ESC键关闭侧边栏
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeUserSidebar();
-            }
-        });
-
         // 移动端菜单控制
         function toggleMobileMenu() {
             const sidebar = document.getElementById('mobileSidebar')
@@ -1088,43 +1227,491 @@
         }
 
         // 监听窗口大小变化，大屏幕时自动关闭移动菜单
-        window.addEventListener('resize', function() {
+			window.addEventListener('resize', function () {
             if (window.innerWidth > 768) {
                 closeMobileMenu()
             }
         })
 
+			// 商品数据
+			let products = []
+			let selectedProduct = null
+
+			// 获取商品列表
+			async function fetchProducts() {
+				const loadingEl = document.getElementById('pricingLoading')
+				const plansContainer = document.getElementById('pricingPlans')
+
+				try {
+					const response = await get('/pay/products')
+
+					// 处理返回数据
+					if (response && Array.isArray(response)) {
+						products = response
+					} else if (response && response.data && Array.isArray(response.data)) {
+						products = response.data
+					} else if (response && response.coins && Array.isArray(response.coins)) {
+						products = response.coins
+					} else {
+						throw new Error('Invalid response format')
+					}
+
+					// 隐藏加载状态
+					if (loadingEl) loadingEl.style.display = 'none'
+
+					// 渲染商品列表
+					renderProducts()
+				} catch (error) {
+					console.error('Failed to fetch products:', error)
+
+					// 显示错误状态
+					plansContainer.innerHTML = `
+                    <div class="pricing-error">
+                        <p>😕 Failed to load pricing plans</p>
+                        <button onclick="fetchProducts()">Try Again</button>
+                    </div>
+                `
+				}
+			}
+
+			// 渲染商品列表
+			function renderProducts() {
+				const plansContainer = document.getElementById('pricingPlans')
+
+				if (!products || products.length === 0) {
+					plansContainer.innerHTML = `
+                    <div class="pricing-error">
+                        <p>No pricing plans available</p>
+                    </div>
+                `
+					return
+				}
+
+				let html = ''
+
+				products.forEach((product, index) => {
+					const isSelected = product.is_selected === 1
+					const hasDiscount = parseFloat(product.discount) > 0
+					const hasOriginalPrice = parseFloat(product.original_price) > 0
+
+					// 如果是默认选中的，记录下来
+					if (isSelected) {
+						selectedProduct = product
+					}
+
+					html += `
+                    <div class="pricing-plan ${isSelected ? 'selected recommended' : ''}" 
+                         onclick="selectPlan(this, ${product.id})"
+                         data-product-id="${product.id}">
+                        <div class="plan-left">
+                            <div class="plan-radio"></div>
+                            <div class="plan-info">
+                                <h3>
+                                    <span class="coins-icon">
+                                        <img src="./assets/coin.png" alt="coins">
+                                        ${product.coins} Coins
+                                    </span>
+                                    ${hasDiscount ? `<span class="discount-badge">-${product.discount}%</span>` : ''}
+                                </h3>
+                                <p>${product.title}</p>
+                            </div>
+                        </div>
+                        <div class="plan-price">
+                            <div class="price">
+                                ${hasOriginalPrice ? `<span class="original-price">$${product.original_price}</span>` : ''}
+                                $${product.price}
+                            </div>
+                            <div class="period">${product.currency}</div>
+                        </div>
+                    </div>
+                `
+				})
+
+				plansContainer.innerHTML = html
+
+				// 如果没有默认选中的，选择第一个
+				if (!selectedProduct && products.length > 0) {
+					selectedProduct = products[0]
+					const firstPlan = plansContainer.querySelector('.pricing-plan')
+					if (firstPlan) {
+						firstPlan.classList.add('selected')
+					}
+				}
+			}
+
         // 价格方案选择
-        function selectPlan(planElement) {
+			function selectPlan(planElement, productId) {
             // 移除所有选中状态
             const allPlans = document.querySelectorAll('.pricing-plan')
-            allPlans.forEach(plan => {
+				allPlans.forEach((plan) => {
                 plan.classList.remove('selected')
             })
             
             // 添加选中状态到当前点击的方案
             planElement.classList.add('selected')
+
+				// 更新选中的商品
+				selectedProduct = products.find((p) => p.id === productId)
         }
 
         // 购买按钮点击
         function buyNow() {
-            const selectedPlan = document.querySelector('.pricing-plan.selected')
-            if (selectedPlan) {
-                const planName = selectedPlan.querySelector('h3').textContent
-                const planPrice = selectedPlan.querySelector('.price').textContent
-                alert(`You selected: ${planName} - ${planPrice}\nRedirecting to payment...`)
-                // 这里可以添加实际的支付逻辑
-            } else {
-                alert('Please select a plan first!')
-            }
-        }
+				// 检查登录状态
+				if (!LoginModal.requireLogin(doBuyNow)) {
+					return
+				}
+				doBuyNow()
+			}
 
-        // 页面加载时默认选择第一个方案
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstPlan = document.querySelector('.pricing-plan.recommended')
-            if (firstPlan) {
-                firstPlan.classList.add('selected')
-            }
+			// 支付渠道相关
+			let channels = []
+			let selectedChannel = null
+
+			// 实际执行购买的函数 - 打开渠道选择弹窗
+			async function doBuyNow() {
+				if (!selectedProduct) {
+					Toast.error('Please select a plan first!')
+					return
+				}
+
+				// 打开渠道选择弹窗
+				openChannelModal()
+			}
+
+			// 打开支付渠道弹窗
+			async function openChannelModal() {
+				const modal = document.getElementById('channelModal')
+				const modalBody = document.getElementById('channelModalBody')
+				const productName = document.getElementById('channelProductName')
+				const productPrice = document.getElementById('channelProductPrice')
+				const payBtn = document.getElementById('channelPayBtn')
+
+				// 重置状态
+				selectedChannel = null
+				payBtn.disabled = true
+
+				// 显示商品信息
+				productName.textContent = `${selectedProduct.coins} Coins`
+				productPrice.textContent = `$${selectedProduct.price}`
+
+				// 显示弹窗
+				modal.classList.add('active')
+				document.body.style.overflow = 'hidden'
+
+				// 显示加载状态
+				modalBody.innerHTML = `
+                <div class="channel-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading payment methods...</p>
+                </div>
+            `
+
+				try {
+					// 获取支付渠道
+					const response = await get('/pay/channels', { pid: selectedProduct.id })
+					console.log(response)
+					if (response) {
+						channels = response.items
+            } else {
+						throw new Error('Invalid response format')
+					}
+
+					// 渲染渠道列表
+					renderChannels()
+				} catch (error) {
+					console.error('Failed to fetch channels:', error)
+					modalBody.innerHTML = `
+                    <div class="pricing-error">
+                        <p>😕 Failed to load payment methods</p>
+                        <button onclick="openChannelModal()">Try Again</button>
+                    </div>
+                `
+				}
+			}
+
+			// 渲染支付渠道列表
+			function renderChannels() {
+				const modalBody = document.getElementById('channelModalBody')
+				const payBtn = document.getElementById('channelPayBtn')
+
+				if (!channels || channels.length === 0) {
+					modalBody.innerHTML = `
+                    <div class="pricing-error">
+                        <p>No payment methods available</p>
+                    </div>
+                `
+					return
+				}
+
+				let html = '<div class="channel-list">'
+
+				channels.forEach((channel, index) => {
+					const isFirst = index === 0
+					const displayName = channel.description ? `${channel.name} - ${channel.description}` : channel.name
+
+					html += `
+                    <div class="channel-item ${isFirst ? 'selected' : ''}" onclick="selectChannel(${channel.id})" data-channel-id="${channel.id}">
+                        <div class="channel-icon">
+                            <img src="${channel.icon_url}" alt="${channel.name}" onerror="this.src='./assets/coin.png'">
+                        </div>
+                        <div class="channel-info">
+                            <div class="channel-name">
+                                ${channel.name}
+                                ${channel.is_safe === 1 ? '<span class="channel-safe-badge">SAFE</span>' : ''}
+                            </div>
+                            ${channel.description ? `<div class="channel-desc">${channel.description}</div>` : ''}
+                        </div>
+                        <div class="channel-radio"></div>
+                    </div>
+                `
+				})
+
+				html += '</div>'
+				modalBody.innerHTML = html
+
+				// 默认选择第一个渠道
+				if (channels.length > 0) {
+					selectedChannel = channels[0]
+					payBtn.disabled = false
+				}
+			}
+
+			// 选择支付渠道
+			function selectChannel(channelId) {
+				const allItems = document.querySelectorAll('.channel-item')
+				allItems.forEach((item) => item.classList.remove('selected'))
+
+				const selectedItem = document.querySelector(`.channel-item[data-channel-id="${channelId}"]`)
+				if (selectedItem) {
+					selectedItem.classList.add('selected')
+				}
+
+				selectedChannel = channels.find((c) => c.id === channelId)
+
+				// 启用支付按钮
+				const payBtn = document.getElementById('channelPayBtn')
+				payBtn.disabled = false
+			}
+
+			// 关闭支付渠道弹窗
+			function closeChannelModal() {
+				const modal = document.getElementById('channelModal')
+				modal.classList.remove('active')
+				document.body.style.overflow = ''
+			}
+
+			// 确认支付
+			async function confirmPayment() {
+				if (!selectedChannel || !selectedProduct) {
+					Toast.error('Please select a payment method')
+					return
+				}
+
+				const payBtn = document.getElementById('channelPayBtn')
+				payBtn.textContent = 'Processing...'
+				payBtn.disabled = true
+
+				try {
+					// 调用支付准备接口
+					const response = await get('/pay/prepare', {
+						pid: selectedProduct.id,
+						channel_id: selectedChannel.id,
+					})
+
+					// 处理支付结果
+					if (response && response.pay_link) {
+						const payLink = response.pay_link
+						const tradeSn = response.trade_sn
+
+						// 保存订单号
+						if (tradeSn) {
+							localStorage.setItem('trade_sn', tradeSn)
+							sessionStorage.setItem('trade_sn', tradeSn)
+						}
+
+						// 使用 <a> 标签模拟点击来跳转，避免 Safari 拦截
+						try {
+							const a = document.createElement('a')
+							a.href = payLink
+							a.target = '_self'
+							document.body.appendChild(a)
+							a.click()
+							document.body.removeChild(a)
+						} catch (error) {
+							console.error('Failed to open payment page:', error)
+							// 备用方案：直接跳转
+							window.location.href = payLink
+						}
+
+						closeChannelModal()
+					} else {
+						Toast.error('Failed to create payment order')
+					}
+				} catch (error) {
+					console.error('Payment error:', error)
+					Toast.error(error.message || 'Payment failed, please try again')
+				} finally {
+					payBtn.textContent = 'Confirm Payment'
+					payBtn.disabled = false
+				}
+			}
+
+			// 点击弹窗外部关闭
+			document.addEventListener('click', function (e) {
+				const modal = document.getElementById('channelModal')
+				if (e.target === modal) {
+					closeChannelModal()
+				}
+			})
+
+			// ESC 键关闭弹窗
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape') {
+					closeChannelModal()
+				}
+			})
+
+			// ========== 支付状态确认弹窗 ==========
+			
+			// 当前订单号
+			let currentTradeSn = null
+
+			// 显示支付状态弹窗
+			function showPaymentStatusModal() {
+				const modal = document.getElementById('paymentStatusModal')
+				modal.classList.add('active')
+				document.body.style.overflow = 'hidden'
+			}
+
+			// 关闭支付状态弹窗
+			function closePaymentStatusModal() {
+				const modal = document.getElementById('paymentStatusModal')
+				modal.classList.remove('active')
+				document.body.style.overflow = ''
+			}
+
+			// 处理：已购买 - 查询订单
+			async function handlePurchased() {
+				const tradeSn = localStorage.getItem('trade_sn') || sessionStorage.getItem('trade_sn')
+				if (!tradeSn) {
+					Toast.error('Order information lost')
+					closePaymentStatusModal()
+					return
+				}
+
+				const btn = document.getElementById('btnPurchased')
+				btn.textContent = 'Checking...'
+				btn.disabled = true
+
+				// 先上报支付状态
+				try {
+					await post('/pay/report', { content: 'purchased', trade_sn: tradeSn })
+				} catch (e) {
+					console.error('Payment report failed:', e)
+				}
+
+				// 查询订单
+				try {
+					localStorage.removeItem('trade_sn')
+					sessionStorage.removeItem('trade_sn')
+					
+					const response = await get('/pay/query', { trade_sn: tradeSn })
+					console.log('Order query response:', response)
+					
+					// 查找当前订单状态
+					let orderStatus = null
+					if (Array.isArray(response)) {
+						orderStatus = response.find(order => order.trade_sn === tradeSn)
+					} else if (response && response.trade_sn) {
+						orderStatus = response
+					}
+					
+					if (orderStatus && orderStatus.status === 1) {
+						// status === 1 means payment successful
+						closePaymentStatusModal()
+						Toast.success('Payment successful!')
+						
+						// 获取最新用户信息
+						try {
+							const userInfo = await get('/my/profile')
+							if (userInfo) {
+								localStorage.setItem('userInfo', JSON.stringify(userInfo))
+							}
+						} catch (e) {
+							console.error('Failed to refresh user info:', e)
+						}
+						
+						setTimeout(() => {
+							location.reload()
+						}, 300)
+					} else {
+						const message = orderStatus && orderStatus.message ? orderStatus.message : 'Order not confirmed, please try again later'
+						Toast.info(message)
+					}
+				} catch (error) {
+					console.error('Query order error:', error)
+					Toast.error('Query failed, please try again later')
+				} finally {
+					btn.textContent = 'Purchased'
+					btn.disabled = false
+				}
+			}
+
+			// 处理支付反馈上报
+			async function reportPaymentStatus(content) {
+				const tradeSn = localStorage.getItem('trade_sn') || sessionStorage.getItem('trade_sn')
+				if (!tradeSn) {
+					closePaymentStatusModal()
+					return
+				}
+
+				try {
+					await post('/pay/report', { content: content, trade_sn: tradeSn })
+				} catch (error) {
+					console.error('Payment report failed:', error)
+				}
+				
+				// 清除订单号
+				localStorage.removeItem('trade_sn')
+				sessionStorage.removeItem('trade_sn')
+				closePaymentStatusModal()
+			}
+
+			// Handle: Too Expensive
+			async function handleTooExpensive() {
+				await reportPaymentStatus('too_expensive')
+				Toast.info('Thanks for your feedback')
+			}
+
+			// Handle: Payment Issue
+			async function handlePaymentIssue() {
+				await reportPaymentStatus('payment_issue')
+				Toast.info('Please contact support if you have any issues')
+			}
+
+			// Handle: Pay Later
+			async function handlePayLater() {
+				await reportPaymentStatus('pay_later')
+				Toast.info('Looking forward to seeing you again')
+			}
+
+			// 检查是否有待确认的订单
+			function checkPendingOrder() {
+				const tradeSn = localStorage.getItem('trade_sn') || sessionStorage.getItem('trade_sn')
+				if (tradeSn) {
+					currentTradeSn = tradeSn
+					// 延迟显示，让页面先加载完成
+					setTimeout(() => {
+						showPaymentStatusModal()
+					}, 500)
+				}
+			}
+
+			// 页面加载时获取商品数据并检查待确认订单
+			document.addEventListener('DOMContentLoaded', function () {
+				fetchProducts()
+				// 检查是否有待确认的订单
+				checkPendingOrder()
         })
     </script>
 </body>

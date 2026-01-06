@@ -1187,6 +1187,27 @@
     <script src="./aos.js"></script>
     <script src="./magnific-popup.min.js"></script>
     <script src="./app.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/md5.js"></script>
+    <script src="./js/request.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="./js/login-modal.js"></script>
+    <script>
+      // 获取所有 Get Started 按钮并添加登录检查
+      document.addEventListener('DOMContentLoaded', function() {
+        const getStartedBtns = document.querySelectorAll('a[href*="emojis"]');
+        getStartedBtns.forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            if (!LoginModal.isLoggedIn()) {
+              e.preventDefault();
+              LoginModal.show();
+            }
+          });
+        });
+      });
+    </script>
     <!-- Javascript External End -->
   
 
