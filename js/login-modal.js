@@ -889,50 +889,60 @@ const LoginModal = {
                     }
                     
                     .login-modal-left {
-                        padding: 30px 20px;
-                        border-right: none;
-                        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                    }
-                    
-                    .login-modal-reviews {
                         display: none;
                     }
                     
                     .login-modal-right {
-                        padding: 30px 20px;
+                        padding: 40px 24px;
                     }
                     
                     .login-modal {
-                        max-height: 95vh;
+                        max-width: 400px;
+                        max-height: 90vh;
                         overflow-y: auto;
                     }
                     
                     .login-title {
-                        font-size: 20px;
-                        margin-bottom: 24px;
+                        font-size: 22px;
+                        margin-bottom: 28px;
+                    }
+                    
+                    .login-modal-close {
+                        top: 12px;
+                        right: 12px;
+                        width: 36px;
+                        height: 36px;
                     }
                 }
                 
                 @media (max-width: 480px) {
                     .login-modal {
                         width: 95%;
-                        border-radius: 16px;
-                    }
-                    
-                    .login-modal-left {
-                        padding: 20px 16px;
+                        border-radius: 20px;
                     }
                     
                     .login-modal-right {
-                        padding: 24px 16px;
+                        padding: 32px 20px;
                     }
                     
-                    .login-modal-title {
-                        font-size: 24px;
+                    .login-title {
+                        font-size: 20px;
+                        margin-bottom: 24px;
                     }
                     
-                    .powered-logos {
-                        gap: 12px;
+                    .login-btn {
+                        padding: 12px 20px;
+                        font-size: 14px;
+                    }
+                    
+                    .login-input {
+                        padding: 12px 16px;
+                        font-size: 14px;
+                    }
+                    
+                    .login-terms {
+                        font-size: 11px;
+                        margin-top: 20px;
                     }
                 }
             </style>
