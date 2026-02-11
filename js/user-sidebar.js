@@ -28,7 +28,7 @@ const UserSidebar = {
             <div class="user-sidebar" id="userSidebar">
                 <div class="user-sidebar-header">
                     <div class="user-sidebar-logo">
-                        <img src="${assetsPath}icon-logo.png" alt="Emojis AI" />
+                        <img src="${assetsPath}icon-logo.png" alt="Emojis Generator" />
                     </div>
                     <button class="user-sidebar-close" onclick="UserSidebar.close()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
