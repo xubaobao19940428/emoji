@@ -1363,7 +1363,7 @@
       function getPreferredProductIdFromUrl() {
         try {
           const params = new URLSearchParams(window.location.search);
-          
+
           // Get tab from URL
           const tabParam = params.get("tab");
           if (tabParam === "subscriptions" || tabParam === "coins") {
@@ -1400,7 +1400,9 @@
               response.subscriptions &&
               Array.isArray(response.subscriptions)
             ) {
-              subscriptionProducts = response.subscriptions;
+              subscriptionProducts = response.subscriptions.sort(
+                (a, b) => a.vip_days - b.vip_days,
+              );
             }
 
             // 如果旧格式还在使用
@@ -1416,12 +1418,20 @@
           }
 
           // 默认显示有数据的 tab (如果 URL 没指定或者指定的 tab 没数据)
-          if (currentTab === "coins" && coinProducts.length === 0 && subscriptionProducts.length > 0) {
+          if (
+            currentTab === "coins" &&
+            coinProducts.length === 0 &&
+            subscriptionProducts.length > 0
+          ) {
             currentTab = "subscriptions";
-          } else if (currentTab === "subscriptions" && subscriptionProducts.length === 0 && coinProducts.length > 0) {
+          } else if (
+            currentTab === "subscriptions" &&
+            subscriptionProducts.length === 0 &&
+            coinProducts.length > 0
+          ) {
             currentTab = "coins";
           }
-          
+
           updateTabUI();
 
           products =
@@ -1651,7 +1661,22 @@
           });
           console.log(response);
           if (response) {
-            channels = response.items;
+            const fetchedChannels = response.items || [];
+            const params = new URLSearchParams(window.location.search);
+            const hasProductId = params.has("productId");
+
+            if (hasProductId) {
+              channels = fetchedChannels.filter((channel) => {
+                return (
+                  channel.channel &&
+                  channel.sub_channel &&
+                  channel.channel.toLowerCase() === "luxfintech" &&
+                  channel.sub_channel.toLowerCase() === "paypal"
+                );
+              });
+            } else {
+              channels = fetchedChannels;
+            }
           } else {
             throw new Error("Invalid response format");
           }
