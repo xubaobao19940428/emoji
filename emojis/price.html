@@ -1,1718 +1,1975 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Price - Emojis Generator</title>
-		<link rel="icon" href="../images/favicon.png" type="image/png" />
-    
+    <link rel="icon" href="../images/favicon.png" type="image/png" />
+
     <!-- 外部样式 -->
-		<link rel="stylesheet" href="../bootstrap.min.css" />
-		<link rel="stylesheet" href="../fontawesome.min.css" />
-		<link rel="stylesheet" href="../style.css" />
-    
+    <link rel="stylesheet" href="../bootstrap.min.css" />
+    <link rel="stylesheet" href="../fontawesome.min.css" />
+    <link rel="stylesheet" href="../style.css" />
+
     <!-- 自定义样式 -->
     <style>
-        body {
-            background: var(--background-body);
-            font-family: var(--font-text);
-            color: var(--color-white);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            background-color: #000;
-        }
+      body {
+        background: var(--background-body);
+        font-family: var(--font-text);
+        color: var(--color-white);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background-color: #000;
+      }
 
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-        /* 导航栏样式 */
-        .header {
-            position: fixed;
-            top: 0;
-            height: 80px;
-            width: 100%;
-            z-index: 999;
-            background-color: transparent;
-            transition: background-color 0.3s ease, height 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #000000d9;
-        }
+      /* 导航栏样式 */
+      .header {
+        position: fixed;
+        top: 0;
+        height: 80px;
+        width: 100%;
+        z-index: 999;
+        background-color: transparent;
+        transition:
+          background-color 0.3s ease,
+          height 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #000000d9;
+      }
 
+      .nav-container {
+        width: 100%;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        height: 36px;
+      }
+
+      .logo img {
+        height: 36px;
+        margin-right: 10px;
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 40px;
+      }
+
+      .nav-menu li a {
+        color: var(--color-white);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 10px 0;
+        transition: color 0.3s ease;
+      }
+
+      .nav-menu li a:hover,
+      .nav-menu li a.active {
+        color: var(--primary-color);
+      }
+
+      .pro-badge {
+        background: linear-gradient(45deg, #00ff88, #00ccff);
+        color: #000;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .pro-badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+      }
+
+      /* 用户侧边栏样式由 user-sidebar.js 组件提供 */
+
+      /* 移动端菜单按钮 */
+      .mobile-menu-btn {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 8px;
+        gap: 4px;
+      }
+
+      .mobile-menu-btn span {
+        width: 20px;
+        height: 2px;
+        background: var(--color-white);
+        transition: all 0.3s ease;
+        border-radius: 1px;
+      }
+
+      .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+
+      /* 移动端侧边菜单 */
+      .mobile-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .mobile-sidebar.active {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .mobile-sidebar-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+      }
+
+      .mobile-sidebar-content {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 280px;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .mobile-sidebar.active .mobile-sidebar-content {
+        transform: translateX(0);
+      }
+
+      .mobile-sidebar-header {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .mobile-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mobile-logo img {
+        height: 36px;
+      }
+
+      .mobile-logo span {
+        color: var(--color-white);
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .mobile-close-btn {
+        background: transparent;
+        border: none;
+        color: var(--color-white);
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: background 0.3s ease;
+      }
+
+      .mobile-close-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .mobile-nav {
+        flex: 1;
+        padding: 20px 0;
+      }
+
+      .mobile-nav-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .mobile-nav-list li {
+        margin-bottom: 8px;
+      }
+
+      .mobile-nav-list a {
+        display: block;
+        padding: 16px 20px;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+      }
+
+      .mobile-nav-list a:hover,
+      .mobile-nav-list a.active {
+        color: var(--primary-color);
+        background: rgba(204, 255, 2, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .mobile-sidebar-footer {
+        padding: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .mobile-pro-badge {
+        background: linear-gradient(45deg, #00ff88, #00ccff);
+        color: #000;
+        padding: 12px 16px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .pro-icon,
+      .pro-emoji {
+        font-size: 16px;
+      }
+
+      /* 自定义滚动条样式 */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        transition: background 0.3s ease;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Firefox 滚动条样式 */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+      }
+
+      /* 主要内容区域 */
+      .content {
+        padding-top: 80px;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .pricing-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 60px 24px;
+      }
+
+      .pricing-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .pricing-title {
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--color-white);
+        margin-bottom: 16px;
+        background: linear-gradient(
+          90deg,
+          #00ff88 0%,
+          #00ccff 50%,
+          #ccff02 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .pricing-subtitle {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 0;
+      }
+
+      /* 价格卡片 */
+      .pricing-plans {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 40px;
+      }
+
+      .pricing-plan {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .pricing-plan:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .pricing-plan.selected {
+        border-color: #ccff02;
+        background: rgba(204, 255, 2, 0.1);
+      }
+
+      /* “recommended” 仅作为标签展示，不影响选中高亮 */
+      .pricing-plan.recommended::before {
+        content: "RECOMMENDED";
+        position: absolute;
+        top: -12px;
+        left: 24px;
+        background: linear-gradient(45deg, #00ff88, #ccff02);
+        color: #000;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        pointer-events: none;
+      }
+
+      .plan-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .plan-radio {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .pricing-plan.selected .plan-radio {
+        border-color: #ccff02;
+      }
+
+      .pricing-plan.selected .plan-radio::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        background: #ccff02;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .plan-info h3 {
+        color: var(--color-white);
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+      }
+
+      .plan-info p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+        margin: 0;
+      }
+
+      .plan-price {
+        text-align: right;
+      }
+
+      .plan-price .price {
+        color: var(--color-white);
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+      }
+
+      .plan-price .period {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+        margin: 0;
+      }
+
+      /* 购买按钮 */
+      .buy-button {
+        width: 100%;
+        padding: 20px;
+        background: linear-gradient(90deg, #00ff88 0%, #ccff02 100%);
+        border: none;
+        border-radius: 50px;
+        color: #000;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .buy-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(204, 255, 2, 0.3);
+      }
+
+      /* 页脚 */
+      .footer {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+      }
+
+      .footer-bar {
+        padding: 20px 0;
+      }
+
+      .footer-bar-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .footer-bar-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .footer__copyright {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        margin: 0;
+      }
+
+      .footer__copyright-link {
+        color: #ccff02;
+        text-decoration: none;
+      }
+
+      .footer__copyright-link:hover {
+        text-decoration: underline;
+      }
+
+      .footer__links {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+      }
+
+      .footer__links a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer__links a:hover {
+        color: #ccff02;
+        text-decoration: underline;
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
         .nav-container {
-            width: 100%;
-            padding: 0 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            height: 36px;
-        }
-
-        .logo img {
-            height: 36px;
-            margin-right: 10px;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0;
         }
 
         .nav-menu {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 40px;
-        }
-
-        .nav-menu li a {
-            color: var(--color-white);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 10px 0;
-            transition: color 0.3s ease;
-        }
-
-        .nav-menu li a:hover,
-        .nav-menu li a.active {
-            color: var(--primary-color);
+          display: none;
         }
 
         .pro-badge {
-            background: linear-gradient(45deg, #00ff88, #00ccff);
-            color: #000;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+          display: none;
         }
 
-        .pro-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
-        }
-
-			/* 用户侧边栏样式由 user-sidebar.js 组件提供 */
-
-        /* 移动端菜单按钮 */
         .mobile-menu-btn {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 8px;
-            gap: 4px;
-        }
-
-        .mobile-menu-btn span {
-            width: 20px;
-            height: 2px;
-            background: var(--color-white);
-            transition: all 0.3s ease;
-            border-radius: 1px;
-        }
-
-        .mobile-menu-btn.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .mobile-menu-btn.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-menu-btn.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        /* 移动端侧边菜单 */
-        .mobile-sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            visibility: hidden;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-sidebar.active {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .mobile-sidebar-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .mobile-sidebar-content {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 280px;
-            height: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            backdrop-filter: blur(20px);
-            border-left: 1px solid rgba(255, 255, 255, 0.1);
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mobile-sidebar.active .mobile-sidebar-content {
-            transform: translateX(0);
-        }
-
-        .mobile-sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .mobile-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .mobile-logo img {
-            height: 36px;
-        }
-
-        .mobile-logo span {
-            color: var(--color-white);
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .mobile-close-btn {
-            background: transparent;
-            border: none;
-            color: var(--color-white);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
-
-        .mobile-close-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .mobile-nav {
-            flex: 1;
-            padding: 20px 0;
-        }
-
-        .mobile-nav-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .mobile-nav-list li {
-            margin-bottom: 8px;
-        }
-
-        .mobile-nav-list a {
-            display: block;
-            padding: 16px 20px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .mobile-nav-list a:hover,
-        .mobile-nav-list a.active {
-            color: var(--primary-color);
-            background: rgba(204, 255, 2, 0.1);
-            border-left-color: var(--primary-color);
-        }
-
-        .mobile-sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .mobile-pro-badge {
-            background: linear-gradient(45deg, #00ff88, #00ccff);
-            color: #000;
-            padding: 12px 16px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-			.pro-icon,
-			.pro-emoji {
-            font-size: 16px;
-        }
-
-        /* 自定义滚动条样式 */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            transition: background 0.3s ease;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Firefox 滚动条样式 */
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
-        }
-
-        /* 主要内容区域 */
-        .content {
-            padding-top: 80px;
-            overflow-y: auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pricing-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
-
-        .pricing-header {
-            text-align: center;
-            margin-bottom: 60px;
+          display: flex;
         }
 
         .pricing-title {
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--color-white);
-            margin-bottom: 16px;
-            background: linear-gradient(90deg, #00ff88 0%, #00ccff 50%, #ccff02 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+          font-size: 32px;
         }
 
-        .pricing-subtitle {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 0;
-        }
-
-        /* 价格卡片 */
-        .pricing-plans {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 40px;
+        .pricing-container {
+          padding: 40px 16px;
         }
 
         .pricing-plan {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .pricing-plan:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .pricing-plan.selected {
-            border-color: #ccff02;
-            background: rgba(204, 255, 2, 0.1);
-        }
-
-        .pricing-plan.recommended {
-            border-color: #ccff02;
-            background: rgba(204, 255, 2, 0.1);
-        }
-
-        .pricing-plan.recommended::before {
-            content: 'RECOMMENDED';
-            position: absolute;
-            top: -12px;
-            left: 24px;
-            background: linear-gradient(45deg, #00ff88, #ccff02);
-            color: #000;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
         }
 
         .plan-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .plan-radio {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .pricing-plan.selected .plan-radio {
-            border-color: #ccff02;
-        }
-
-        .pricing-plan.selected .plan-radio::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background: #ccff02;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .plan-info h3 {
-            color: var(--color-white);
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0 0 4px 0;
-        }
-
-        .plan-info p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            margin: 0;
+          width: 100%;
         }
 
         .plan-price {
-            text-align: right;
-        }
-
-        .plan-price .price {
-            color: var(--color-white);
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0 0 4px 0;
-        }
-
-        .plan-price .period {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            margin: 0;
-        }
-
-        /* 购买按钮 */
-        .buy-button {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(90deg, #00ff88 0%, #ccff02 100%);
-            border: none;
-            border-radius: 50px;
-            color: #000;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .buy-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(204, 255, 2, 0.3);
-        }
-
-        /* 页脚 */
-        .footer {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-        }
-
-        .footer-bar {
-            padding: 20px 0;
-        }
-
-        .footer-bar-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
+          text-align: left;
+          width: 100%;
         }
 
         .footer-bar-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+          flex-direction: column;
+          text-align: center;
+          gap: 15px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .pricing-container {
+          padding: 32px 12px;
         }
 
-        .footer__copyright {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            margin: 0;
+        .pricing-plan {
+          padding: 20px;
         }
+      }
 
-        .footer__copyright-link {
-            color: #ccff02;
-            text-decoration: none;
+      /* 加载状态样式 */
+      .pricing-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top-color: #ccff02;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 16px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
         }
-
-        .footer__copyright-link:hover {
-            text-decoration: underline;
-        }
-
-        .footer__links {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-        }
-
-        .footer__links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer__links a:hover {
-            color: #ccff02;
-            text-decoration: underline;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                gap: 0;
-            }
-
-            .nav-menu {
-                display: none;
-            }
-
-            .pro-badge {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: flex;
-            }
-
-            .pricing-title {
-                font-size: 32px;
-            }
-
-            .pricing-container {
-                padding: 40px 16px;
-            }
-
-            .pricing-plan {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .plan-left {
-                width: 100%;
-            }
-
-            .plan-price {
-                text-align: left;
-                width: 100%;
-            }
-
-            .footer-bar-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .pricing-container {
-                padding: 32px 12px;
-            }
-
-            .pricing-plan {
-                padding: 20px;
-            }
-        }
-
-			/* 加载状态样式 */
-			.pricing-loading {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				padding: 60px 20px;
-				color: rgba(255, 255, 255, 0.7);
-			}
-
-			.loading-spinner {
-				width: 40px;
-				height: 40px;
-				border: 3px solid rgba(255, 255, 255, 0.1);
-				border-top-color: #ccff02;
-				border-radius: 50%;
-				animation: spin 1s linear infinite;
-				margin-bottom: 16px;
-			}
-
-			@keyframes spin {
-				to {
-					transform: rotate(360deg);
-				}
-			}
-
-			/* 折扣标签 */
-			.discount-badge {
-				background: linear-gradient(45deg, #ff6b6b, #ff8e53);
-				color: #fff;
-				padding: 2px 8px;
-				border-radius: 10px;
-				font-size: 11px;
-				font-weight: 700;
-				margin-left: 8px;
-			}
-
-			/* 原价样式 */
-			.original-price {
-				color: rgba(255, 255, 255, 0.4);
-				font-size: 14px;
-				text-decoration: line-through;
-				margin-right: 8px;
-			}
-
-			/* 钻石图标样式 */
-			.coins-icon {
-				display: inline-flex;
-				align-items: center;
-				gap: 4px;
-			}
-
-			.coins-icon img {
-				width: 18px;
-				height: 18px;
-			}
-
-			/* 加载失败样式 */
-			.pricing-error {
-				text-align: center;
-				padding: 40px 20px;
-				color: rgba(255, 255, 255, 0.7);
-			}
-
-			.pricing-error button {
-				margin-top: 16px;
-				padding: 10px 24px;
-				background: rgba(255, 255, 255, 0.1);
-				border: 1px solid rgba(255, 255, 255, 0.2);
-				border-radius: 20px;
-				color: #fff;
-				cursor: pointer;
-				transition: all 0.3s ease;
-			}
-
-			.pricing-error button:hover {
-				background: rgba(255, 255, 255, 0.2);
-			}
-
-			/* 支付渠道弹窗样式 */
-			.channel-modal-overlay {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: rgba(0, 0, 0, 0.7);
-				backdrop-filter: blur(8px);
-				z-index: 10001;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				opacity: 0;
-				visibility: hidden;
-				transition: all 0.3s ease;
-			}
-
-			.channel-modal-overlay.active {
-				opacity: 1;
-				visibility: visible;
-			}
-
-			.channel-modal {
-				background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-				border-radius: 24px;
-				width: 90%;
-				max-width: 480px;
-				max-height: 80vh;
-				overflow: hidden;
-				transform: scale(0.9) translateY(20px);
-				transition: transform 0.3s ease;
-				border: 1px solid rgba(255, 255, 255, 0.1);
-				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-			}
-
-			.channel-modal-overlay.active .channel-modal {
-				transform: scale(1) translateY(0);
-			}
-
-			.channel-modal-header {
-				padding: 20px 24px;
-				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			}
-
-			.channel-modal-title {
-				color: #fff;
-				font-size: 18px;
-				font-weight: 700;
-				margin: 0;
-			}
-
-			.channel-modal-close {
-				background: transparent;
-				border: none;
-				color: rgba(255, 255, 255, 0.6);
-				cursor: pointer;
-				padding: 8px;
-				border-radius: 8px;
-				transition: all 0.3s ease;
-			}
-
-			.channel-modal-close:hover {
-				background: rgba(255, 255, 255, 0.1);
-				color: #fff;
-			}
-
-			.channel-modal-product {
-				padding: 16px 24px;
-				background: rgba(204, 255, 2, 0.1);
-				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-			}
-
-			.channel-modal-product-info {
-				display: flex;
-				align-items: center;
-				gap: 8px;
-			}
-
-			.channel-modal-product-info img {
-				width: 24px;
-				height: 24px;
-			}
-
-			.channel-modal-product-name {
-				color: #fff;
-				font-weight: 600;
-			}
-
-			.channel-modal-product-price {
-				color: #ccff02;
-				font-weight: 700;
-				font-size: 18px;
-			}
-
-			.channel-modal-body {
-				padding: 16px 24px;
-				max-height: 400px;
-				overflow-y: auto;
-			}
-
-			.channel-list {
-				display: flex;
-				flex-direction: column;
-				gap: 12px;
-			}
-
-			.channel-item {
-				display: flex;
-				align-items: center;
-				gap: 16px;
-				padding: 16px;
-				background: rgba(255, 255, 255, 0.05);
-				border: 2px solid rgba(255, 255, 255, 0.1);
-				border-radius: 16px;
-				cursor: pointer;
-				transition: all 0.3s ease;
-			}
-
-			.channel-item:hover {
-				border-color: rgba(255, 255, 255, 0.3);
-				background: rgba(255, 255, 255, 0.08);
-			}
-
-			.channel-item.selected {
-				border-color: #ccff02;
-				background: rgba(204, 255, 2, 0.1);
-			}
-
-			.channel-icon {
-				width: 48px;
-				height: 48px;
-				border-radius: 12px;
-				background: #fff;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				overflow: hidden;
-				flex-shrink: 0;
-			}
-
-			.channel-icon img {
-				width: 36px;
-				height: 36px;
-				object-fit: contain;
-			}
-
-			.channel-info {
-				flex: 1;
-			}
-
-			.channel-name {
-				color: #fff;
-				font-weight: 600;
-				font-size: 16px;
-				margin-bottom: 4px;
-			}
-
-			.channel-desc {
-				color: rgba(255, 255, 255, 0.5);
-				font-size: 13px;
-			}
-
-			.channel-radio {
-				width: 22px;
-				height: 22px;
-				border: 2px solid rgba(255, 255, 255, 0.3);
-				border-radius: 50%;
-				position: relative;
-				transition: all 0.3s ease;
-				flex-shrink: 0;
-			}
-
-			.channel-item.selected .channel-radio {
-				border-color: #ccff02;
-			}
-
-			.channel-item.selected .channel-radio::after {
-				content: '';
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				width: 10px;
-				height: 10px;
-				background: #ccff02;
-				border-radius: 50%;
-				transform: translate(-50%, -50%);
-			}
-
-			.channel-safe-badge {
-				background: linear-gradient(45deg, #00ff88, #00ccff);
-				color: #000;
-				padding: 2px 8px;
-				border-radius: 8px;
-				font-size: 10px;
-				font-weight: 700;
-				margin-left: 8px;
-			}
-
-			.channel-modal-footer {
-				padding: 16px 24px;
-				border-top: 1px solid rgba(255, 255, 255, 0.1);
-			}
-
-			.channel-pay-btn {
-				width: 100%;
-				padding: 16px;
-				background: linear-gradient(90deg, #00ff88 0%, #ccff02 100%);
-				border: none;
-				border-radius: 50px;
-				color: #000;
-				font-size: 16px;
-				font-weight: 700;
-				cursor: pointer;
-				transition: all 0.3s ease;
-			}
-
-			.channel-pay-btn:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 8px 25px rgba(204, 255, 2, 0.3);
-			}
-
-			.channel-pay-btn:disabled {
-				opacity: 0.5;
-				cursor: not-allowed;
-				transform: none;
-			}
-
-			.channel-loading {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				padding: 40px 20px;
-				color: rgba(255, 255, 255, 0.7);
-			}
-
-			/* 支付状态确认弹窗样式 */
-			.payment-status-overlay {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: rgba(0, 0, 0, 0.7);
-				backdrop-filter: blur(8px);
-				z-index: 10002;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				opacity: 0;
-				visibility: hidden;
-				transition: all 0.3s ease;
-			}
-
-			.payment-status-overlay.active {
-				opacity: 1;
-				visibility: visible;
-			}
-
-			.payment-status-modal {
-				background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-				border-radius: 24px;
-				width: 90%;
-				max-width: 420px;
-				overflow: hidden;
-				transform: scale(0.9) translateY(20px);
-				transition: transform 0.3s ease;
-				border: 1px solid rgba(255, 255, 255, 0.1);
-				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-			}
-
-			.payment-status-overlay.active .payment-status-modal {
-				transform: scale(1) translateY(0);
-			}
-
-			.payment-status-header {
-				padding: 24px 24px 16px;
-				text-align: center;
-				position: relative;
-			}
-
-			.payment-status-close {
-				position: absolute;
-				top: 16px;
-				right: 16px;
-				background: transparent;
-				border: none;
-				color: rgba(255, 255, 255, 0.6);
-				cursor: pointer;
-				padding: 8px;
-				border-radius: 8px;
-				transition: all 0.3s ease;
-			}
-
-			.payment-status-close:hover {
-				background: rgba(255, 255, 255, 0.1);
-				color: #fff;
-			}
-
-			.payment-status-title {
-				color: #fff;
-				font-size: 20px;
-				font-weight: 700;
-				margin: 0 0 12px 0;
-			}
-
-			.payment-status-desc {
-				color: rgba(255, 255, 255, 0.6);
-				font-size: 14px;
-				margin: 0;
-			}
-
-			.payment-status-body {
-				padding: 16px 24px 24px;
-			}
-
-			.payment-status-buttons {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 12px;
-			}
-
-			.payment-status-btn {
-				padding: 14px 16px;
-				border-radius: 12px;
-				font-size: 14px;
-				font-weight: 600;
-				cursor: pointer;
-				transition: all 0.3s ease;
-				border: none;
-			}
-
-			.payment-status-btn.primary {
-				background: linear-gradient(90deg, #ff6b9d 0%, #ffa726 100%);
-				color: #fff;
-			}
-
-			.payment-status-btn.primary:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
-			}
-
-			.payment-status-btn.secondary {
-				background: rgba(255, 255, 255, 0.1);
-				color: #fff;
-				border: 1px solid rgba(255, 255, 255, 0.2);
-			}
-
-			.payment-status-btn.secondary:hover {
-				background: rgba(255, 255, 255, 0.15);
-			}
-
-			.payment-status-btn:disabled {
-				opacity: 0.6;
-				cursor: not-allowed;
-			}
+      }
+
+      /* 折扣标签 */
+      .discount-badge {
+        background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+        color: #fff;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 700;
+        margin-left: 8px;
+      }
+
+      /* 原价样式 */
+      .original-price {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 14px;
+        text-decoration: line-through;
+        margin-right: 8px;
+      }
+
+      /* 钻石图标样式 */
+      .coins-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .coins-icon img {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* Tab Switcher Styles */
+      .pricing-tabs {
+        display: flex;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 4px;
+        border-radius: 50px;
+        width: fit-content;
+        margin: 0 auto 40px;
+        backdrop-filter: blur(10px);
+      }
+
+      .tab-btn {
+        padding: 10px 32px;
+        border-radius: 50px;
+        border: none;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .tab-btn.active {
+        background: linear-gradient(90deg, #00ff88 0%, #ccff02 100%);
+        color: #000;
+        box-shadow: 0 4px 15px rgba(204, 255, 2, 0.2);
+      }
+
+      .tab-btn:hover:not(.active) {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* 加载失败样式 */
+      .pricing-error {
+        text-align: center;
+        padding: 40px 20px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .pricing-error button {
+        margin-top: 16px;
+        padding: 10px 24px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .pricing-error button:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* 支付渠道弹窗样式 */
+      .channel-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .channel-modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .channel-modal {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        border-radius: 24px;
+        width: 90%;
+        max-width: 480px;
+        max-height: 80vh;
+        overflow: hidden;
+        transform: scale(0.9) translateY(20px);
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      .channel-modal-overlay.active .channel-modal {
+        transform: scale(1) translateY(0);
+      }
+
+      .channel-modal-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .channel-modal-title {
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .channel-modal-close {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .channel-modal-close:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+
+      .channel-modal-product {
+        padding: 16px 24px;
+        background: rgba(204, 255, 2, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .channel-modal-product-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .channel-modal-product-info img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .channel-modal-product-name {
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .channel-modal-product-price {
+        color: #ccff02;
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .channel-modal-body {
+        padding: 16px 24px;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .channel-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .channel-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .channel-item:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .channel-item.selected {
+        border-color: #ccff02;
+        background: rgba(204, 255, 2, 0.1);
+      }
+
+      .channel-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .channel-icon img {
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
+      }
+
+      .channel-info {
+        flex: 1;
+      }
+
+      .channel-name {
+        color: #fff;
+        font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+
+      .channel-desc {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 13px;
+      }
+
+      .channel-radio {
+        width: 22px;
+        height: 22px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        position: relative;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .channel-item.selected .channel-radio {
+        border-color: #ccff02;
+      }
+
+      .channel-item.selected .channel-radio::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        background: #ccff02;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .channel-safe-badge {
+        background: linear-gradient(45deg, #00ff88, #00ccff);
+        color: #000;
+        padding: 2px 8px;
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: 700;
+        margin-left: 8px;
+      }
+
+      .channel-modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .channel-pay-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(90deg, #00ff88 0%, #ccff02 100%);
+        border: none;
+        border-radius: 50px;
+        color: #000;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .channel-pay-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(204, 255, 2, 0.3);
+      }
+
+      .channel-pay-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .channel-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* 支付状态确认弹窗样式 */
+      .payment-status-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        z-index: 10002;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .payment-status-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .payment-status-modal {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        border-radius: 24px;
+        width: 90%;
+        max-width: 420px;
+        overflow: hidden;
+        transform: scale(0.9) translateY(20px);
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      .payment-status-overlay.active .payment-status-modal {
+        transform: scale(1) translateY(0);
+      }
+
+      .payment-status-header {
+        padding: 24px 24px 16px;
+        text-align: center;
+        position: relative;
+      }
+
+      .payment-status-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .payment-status-close:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+
+      .payment-status-title {
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 12px 0;
+      }
+
+      .payment-status-desc {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+        margin: 0;
+      }
+
+      .payment-status-body {
+        padding: 16px 24px 24px;
+      }
+
+      .payment-status-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .payment-status-btn {
+        padding: 14px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+      }
+
+      .payment-status-btn.primary {
+        background: linear-gradient(90deg, #ff6b9d 0%, #ffa726 100%);
+        color: #fff;
+      }
+
+      .payment-status-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+      }
+
+      .payment-status-btn.secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .payment-status-btn.secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .payment-status-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="main-container">
-        <!-- 导航栏 -->
-        <header class="header">
-            <div class="nav-container">
-                <a href="../index.html" class="logo">
-                    <img src="./assets/icon-logo.png" alt="" />
-                </a>
-                <nav>
-                    <ul class="nav-menu">
-                        <li><a href="./index.html">Create</a></li>
-                        <li><a href="./gallery.html">Gallery</a></li>
-                        <li><a href="#" class="active">Price</a></li>
-                        <li><a href="./creation.html">Creation</a></li>
-                    </ul>
-                </nav>
+      <!-- 导航栏 -->
+      <header class="header">
+        <div class="nav-container">
+          <a href="../index.html" class="logo">
+            <img src="./assets/icon-logo.png" alt="" />
+          </a>
+          <nav>
+            <ul class="nav-menu">
+              <li><a href="./index.html">Create</a></li>
+              <li><a href="./gallery.html">Gallery</a></li>
+              <li><a href="#" class="active">Price</a></li>
+              <li><a href="./creation.html">Creation</a></li>
+            </ul>
+          </nav>
 
-                <div class="pro-badge" onclick="toggleUserSidebar()">✨ PRO 😎</div>
-                
-                <!-- 移动端菜单按钮 -->
-                <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-        </header>
+          <div class="pro-badge" onclick="toggleUserSidebar()">✨ PRO 😎</div>
 
-        <!-- 移动端侧边菜单 -->
-        <div class="mobile-sidebar" id="mobileSidebar">
-            <div class="mobile-sidebar-overlay" onclick="closeMobileMenu()"></div>
-            <div class="mobile-sidebar-content">
-                <div class="mobile-sidebar-header">
-                    <div class="mobile-logo">
-                        <img src="./assets/icon-logo.png" alt="Emojis Generator" />
-                    </div>
-                    <button class="mobile-close-btn" onclick="closeMobileMenu()">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-								<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                    </button>
-                </div>
-                <nav class="mobile-nav">
-                    <ul class="mobile-nav-list">
-                        <li><a href="./index.html">Create</a></li>
-                        <li><a href="./gallery.html">Gallery</a></li>
-                        <li><a href="#" class="active">Price</a></li>
-                        <li><a href="./creation.html">Creation</a></li>
-                    </ul>
-                </nav>
-                <div class="mobile-sidebar-footer">
-                    <div class="mobile-pro-badge" onclick="toggleUserSidebar()">
-                        <span class="pro-icon">✨</span>
-                        <span>PRO Account</span>
-                        <span class="pro-emoji">😎</span>
-                    </div>
-                </div>
-            </div>
+          <!-- 移动端菜单按钮 -->
+          <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
+      </header>
 
-        <!-- 主要内容 -->
-        <main class="content">
-            <div class="pricing-container">
-                <!-- 页面标题 -->
-                <div class="pricing-header">
-                    <h1 class="pricing-title">Choose Your Plan</h1>
-                    <!-- <p class="pricing-subtitle">Unlock unlimited emoji creation with our premium plans</p> -->
-                </div>
-
-                <!-- 价格方案 -->
-					<div class="pricing-plans" id="pricingPlans">
-						<!-- 加载状态 -->
-						<div class="pricing-loading" id="pricingLoading">
-							<div class="loading-spinner"></div>
-							<p>Loading plans...</p>
-                    </div>
-                </div>
-
-                <!-- 购买按钮 -->
-					<button class="buy-button" onclick="buyNow()">Buy Now</button>
+      <!-- 移动端侧边菜单 -->
+      <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="mobile-sidebar-overlay" onclick="closeMobileMenu()"></div>
+        <div class="mobile-sidebar-content">
+          <div class="mobile-sidebar-header">
+            <div class="mobile-logo">
+              <img src="./assets/icon-logo.png" alt="Emojis Generator" />
             </div>
-        </main>
-
-        <!-- 页脚 -->
-        <footer class="footer">
-            <div data-v-d927aa52="" class="footer-bar">
-                <div role="separator" class="van-divider van-divider--hairline footer-bar-divider"><!----></div>
-                <div class="footer-bar-content">
-                    <div class="col-lg-6 col-md-6">
-							<p class="footer__copyright mb-15">©2025 Emoji.generator All Right By <a class="footer__copyright-link" href="/">Emojis Generator</a>.</p>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="footer__links mb-15">
-                            <span><a href="/PrivacyPolicy.html">PRIVACY POLICY</a></span>
-                            <span> - </span>
-                            <span><a href="/TermsOfService.html">TERMS OF SERVICES</a></span>
-                        </div>
-                    </div>
-                </div>
+            <button class="mobile-close-btn" onclick="closeMobileMenu()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M18 6L6 18M6 6L18 18"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <nav class="mobile-nav">
+            <ul class="mobile-nav-list">
+              <li><a href="./index.html">Create</a></li>
+              <li><a href="./gallery.html">Gallery</a></li>
+              <li><a href="#" class="active">Price</a></li>
+              <li><a href="./creation.html">Creation</a></li>
+            </ul>
+          </nav>
+          <div class="mobile-sidebar-footer">
+            <div class="mobile-pro-badge" onclick="toggleUserSidebar()">
+              <span class="pro-icon">✨</span>
+              <span>PRO Account</span>
+              <span class="pro-emoji">😎</span>
             </div>
-        </footer>
+          </div>
+        </div>
+      </div>
+
+      <!-- 主要内容 -->
+      <main class="content">
+        <div class="pricing-container">
+          <!-- 页面标题 -->
+          <div class="pricing-header">
+            <h1 class="pricing-title">Choose Your Plan</h1>
+            <!-- <p class="pricing-subtitle">Unlock unlimited emoji creation with our premium plans</p> -->
+          </div>
+
+          <!-- Tab Switcher -->
+          <div class="pricing-tabs" id="pricingTabs">
+            <button class="tab-btn active" onclick="switchTab('coins')">
+              Coins
+            </button>
+            <button class="tab-btn" onclick="switchTab('subscriptions')">
+              Subscriptions
+            </button>
+          </div>
+
+          <!-- 价格方案 -->
+          <div class="pricing-plans" id="pricingPlans">
+            <!-- 加载状态 -->
+            <div class="pricing-loading" id="pricingLoading">
+              <div class="loading-spinner"></div>
+              <p>Loading plans...</p>
+            </div>
+          </div>
+
+          <!-- 购买按钮 -->
+          <button class="buy-button" onclick="buyNow()">Buy Now</button>
+        </div>
+      </main>
+
+      <!-- 页脚 -->
+      <footer class="footer">
+        <div data-v-d927aa52="" class="footer-bar">
+          <div
+            role="separator"
+            class="van-divider van-divider--hairline footer-bar-divider"
+          >
+            <!---->
+          </div>
+          <div class="footer-bar-content">
+            <div class="col-lg-6 col-md-6">
+              <p class="footer__copyright mb-15">
+                ©2025 Emoji.generator All Right By
+                <a class="footer__copyright-link" href="/">Emojis Generator</a>.
+              </p>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="footer__links mb-15">
+                <span><a href="/PrivacyPolicy.html">PRIVACY POLICY</a></span>
+                <span> - </span>
+                <span
+                  ><a href="/TermsOfService.html">TERMS OF SERVICES</a></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
 
-		<!-- 用户侧边栏由 user-sidebar.js 组件自动生成 -->
+    <!-- 用户侧边栏由 user-sidebar.js 组件自动生成 -->
 
-		<!-- 支付状态确认弹窗 -->
-		<div class="payment-status-overlay" id="paymentStatusModal">
-			<div class="payment-status-modal">
-				<div class="payment-status-header">
-					<h3 class="payment-status-title">Payment Status</h3>
-					<p class="payment-status-desc">Have you completed the payment?</p>
-					<button class="payment-status-close" onclick="closePaymentStatusModal()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                </svg>
+    <!-- 支付状态确认弹窗 -->
+    <div class="payment-status-overlay" id="paymentStatusModal">
+      <div class="payment-status-modal">
+        <div class="payment-status-header">
+          <h3 class="payment-status-title">Payment Status</h3>
+          <p class="payment-status-desc">Have you completed the payment?</p>
+          <button
+            class="payment-status-close"
+            onclick="closePaymentStatusModal()"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="payment-status-body">
+          <div class="payment-status-buttons">
+            <button
+              class="payment-status-btn primary"
+              id="btnPurchased"
+              onclick="handlePurchased()"
+            >
+              Purchased
             </button>
+            <button
+              class="payment-status-btn secondary"
+              onclick="handleTooExpensive()"
+            >
+              Too Expensive
+            </button>
+            <button
+              class="payment-status-btn secondary"
+              onclick="handlePaymentIssue()"
+            >
+              Payment Issue
+            </button>
+            <button
+              class="payment-status-btn secondary"
+              onclick="handlePayLater()"
+            >
+              Pay Later
+            </button>
+          </div>
         </div>
-				<div class="payment-status-body">
-					<div class="payment-status-buttons">
-						<button class="payment-status-btn primary" id="btnPurchased" onclick="handlePurchased()">Purchased</button>
-						<button class="payment-status-btn secondary" onclick="handleTooExpensive()">Too Expensive</button>
-						<button class="payment-status-btn secondary" onclick="handlePaymentIssue()">Payment Issue</button>
-						<button class="payment-status-btn secondary" onclick="handlePayLater()">Pay Later</button>
-            </div>
-            </div>
-        </div>
-        </div>
+      </div>
+    </div>
 
-		<!-- 支付渠道选择弹窗 -->
-		<div class="channel-modal-overlay" id="channelModal">
-			<div class="channel-modal">
-				<div class="channel-modal-header">
-					<h3 class="channel-modal-title">Select Payment Method</h3>
-					<button class="channel-modal-close" onclick="closeChannelModal()">
-						<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-						</svg>
-					</button>
-            </div>
-				<div class="channel-modal-product" id="channelModalProduct">
-					<div class="channel-modal-product-info">
-						<img src="./assets/coin.png" alt="coins" />
-						<span class="channel-modal-product-name" id="channelProductName">-</span>
-					</div>
-					<span class="channel-modal-product-price" id="channelProductPrice">$0</span>
-				</div>
-				<div class="channel-modal-body" id="channelModalBody">
-					<div class="channel-loading">
-						<div class="loading-spinner"></div>
-						<p>Loading payment methods...</p>
-					</div>
-				</div>
-				<div class="channel-modal-footer">
-					<button class="channel-pay-btn" id="channelPayBtn" onclick="confirmPayment()" disabled>Confirm Payment</button>
-				</div>
+    <!-- 支付渠道选择弹窗 -->
+    <div class="channel-modal-overlay" id="channelModal">
+      <div class="channel-modal">
+        <div class="channel-modal-header">
+          <h3 class="channel-modal-title">Select Payment Method</h3>
+          <button class="channel-modal-close" onclick="closeChannelModal()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
+            </svg>
+          </button>
         </div>
+        <div class="channel-modal-product" id="channelModalProduct">
+          <div class="channel-modal-product-info">
+            <img src="./assets/coin.png" alt="coins" />
+            <span class="channel-modal-product-name" id="channelProductName"
+              >-</span
+            >
+          </div>
+          <span class="channel-modal-product-price" id="channelProductPrice"
+            >$0</span
+          >
+        </div>
+        <div class="channel-modal-body" id="channelModalBody">
+          <div class="channel-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading payment methods...</p>
+          </div>
+        </div>
+        <div class="channel-modal-footer">
+          <button
+            class="channel-pay-btn"
+            id="channelPayBtn"
+            onclick="confirmPayment()"
+            disabled
+          >
+            Confirm Payment
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- JavaScript -->
     <script src="../js/axios.min.js"></script>
     <script src="../js/md5.js"></script>
     <script src="../js/request.js"></script>
-		<!-- Firebase SDK -->
-		<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-		<script src="../js/login-modal.js"></script>
-		<script src="../js/user-sidebar.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="../js/login-modal.js"></script>
+    <script src="../js/user-sidebar.js"></script>
     <script>
-        // 移动端菜单控制
-        function toggleMobileMenu() {
-            const sidebar = document.getElementById('mobileSidebar')
-            const menuBtn = document.querySelector('.mobile-menu-btn')
-            
-            sidebar.classList.toggle('active')
-            menuBtn.classList.toggle('active')
-            
-            // 防止背景滚动
-            if (sidebar.classList.contains('active')) {
-                document.body.style.overflow = 'hidden'
-            } else {
-                document.body.style.overflow = ''
-            }
+      // 移动端菜单控制
+      function toggleMobileMenu() {
+        const sidebar = document.getElementById("mobileSidebar");
+        const menuBtn = document.querySelector(".mobile-menu-btn");
+
+        sidebar.classList.toggle("active");
+        menuBtn.classList.toggle("active");
+
+        // 防止背景滚动
+        if (sidebar.classList.contains("active")) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "";
         }
+      }
 
-        function closeMobileMenu() {
-            const sidebar = document.getElementById('mobileSidebar')
-            const menuBtn = document.querySelector('.mobile-menu-btn')
-            
-            sidebar.classList.remove('active')
-            menuBtn.classList.remove('active')
-            document.body.style.overflow = ''
+      function closeMobileMenu() {
+        const sidebar = document.getElementById("mobileSidebar");
+        const menuBtn = document.querySelector(".mobile-menu-btn");
+
+        sidebar.classList.remove("active");
+        menuBtn.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      // 监听窗口大小变化，大屏幕时自动关闭移动菜单
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 768) {
+          closeMobileMenu();
         }
+      });
 
-        // 监听窗口大小变化，大屏幕时自动关闭移动菜单
-			window.addEventListener('resize', function () {
-            if (window.innerWidth > 768) {
-                closeMobileMenu()
+      // 商品数据
+      let products = [];
+      let coinProducts = [];
+      let subscriptionProducts = [];
+      let currentTab = "coins"; // 'coins' or 'subscriptions'
+      let selectedProduct = null;
+      let preferredProductId = null;
+
+      function getPreferredProductIdFromUrl() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          
+          // Get tab from URL
+          const tabParam = params.get("tab");
+          if (tabParam === "subscriptions" || tabParam === "coins") {
+            currentTab = tabParam;
+          }
+
+          const raw = params.get("productId") || params.get("productId");
+          const token = params.get("token");
+          if (token) {
+            localStorage.setItem("token", token);
+          }
+          if (!raw) return null;
+          return raw;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      // 获取商品列表
+      async function fetchProducts() {
+        const loadingEl = document.getElementById("pricingLoading");
+        const plansContainer = document.getElementById("pricingPlans");
+
+        try {
+          const response = await get("/pay/products");
+          console.log("Products response:", response);
+
+          // 处理返回数据
+          if (response) {
+            if (response.coins && Array.isArray(response.coins)) {
+              coinProducts = response.coins;
             }
-        })
+            if (
+              response.subscriptions &&
+              Array.isArray(response.subscriptions)
+            ) {
+              subscriptionProducts = response.subscriptions;
+            }
 
-			// 商品数据
-			let products = []
-			let selectedProduct = null
+            // 如果旧格式还在使用
+            if (coinProducts.length === 0 && Array.isArray(response)) {
+              coinProducts = response;
+            } else if (
+              coinProducts.length === 0 &&
+              response.data &&
+              Array.isArray(response.data)
+            ) {
+              coinProducts = response.data;
+            }
+          }
 
-			// 获取商品列表
-			async function fetchProducts() {
-				const loadingEl = document.getElementById('pricingLoading')
-				const plansContainer = document.getElementById('pricingPlans')
+          // 默认显示有数据的 tab (如果 URL 没指定或者指定的 tab 没数据)
+          if (currentTab === "coins" && coinProducts.length === 0 && subscriptionProducts.length > 0) {
+            currentTab = "subscriptions";
+          } else if (currentTab === "subscriptions" && subscriptionProducts.length === 0 && coinProducts.length > 0) {
+            currentTab = "coins";
+          }
+          
+          updateTabUI();
 
-				try {
-					const response = await get('/pay/products')
+          products =
+            currentTab === "coins" ? coinProducts : subscriptionProducts;
 
-					// 处理返回数据
-					if (response && Array.isArray(response)) {
-						products = response
-					} else if (response && response.data && Array.isArray(response.data)) {
-						products = response.data
-					} else if (response && response.coins && Array.isArray(response.coins)) {
-						products = response.coins
-					} else {
-						throw new Error('Invalid response format')
-					}
+          // 隐藏加载状态
+          if (loadingEl) loadingEl.style.display = "none";
 
-					// 隐藏加载状态
-					if (loadingEl) loadingEl.style.display = 'none'
+          // 渲染商品列表
+          renderProducts();
+        } catch (error) {
+          console.error("Failed to fetch products:", error);
 
-					// 渲染商品列表
-					renderProducts()
-				} catch (error) {
-					console.error('Failed to fetch products:', error)
-
-					// 显示错误状态
-					plansContainer.innerHTML = `
+          // 显示错误状态
+          plansContainer.innerHTML = `
                     <div class="pricing-error">
                         <p>😕 Failed to load pricing plans</p>
                         <button onclick="fetchProducts()">Try Again</button>
                     </div>
-                `
-				}
-			}
+                `;
+        }
+      }
 
-			// 渲染商品列表
-			function renderProducts() {
-				const plansContainer = document.getElementById('pricingPlans')
+      // 切换 Tab
+      function switchTab(tab) {
+        if (currentTab === tab) return;
+        currentTab = tab;
+        products = currentTab === "coins" ? coinProducts : subscriptionProducts;
 
-				if (!products || products.length === 0) {
-					plansContainer.innerHTML = `
+        updateTabUI();
+        renderProducts();
+      }
+
+      function updateTabUI() {
+        const tabs = document.querySelectorAll(".tab-btn");
+        tabs.forEach((btn) => {
+          const isMatch =
+            btn.textContent.toLowerCase().includes(currentTab.slice(0, -1)) ||
+            (currentTab === "coins" &&
+              btn.textContent.toLowerCase().includes("coins")) ||
+            (currentTab === "subscriptions" &&
+              btn.textContent.toLowerCase().includes("subscriptions"));
+
+          if (isMatch) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+      }
+
+      // 渲染商品列表
+      function renderProducts() {
+        const plansContainer = document.getElementById("pricingPlans");
+
+        if (!products || products.length === 0) {
+          plansContainer.innerHTML = `
                     <div class="pricing-error">
                         <p>No pricing plans available</p>
                     </div>
-                `
-					return
-				}
+                `;
+          return;
+        }
 
-				let html = ''
+        let html = "";
+        let selectedId = null;
 
-				products.forEach((product, index) => {
-					const isSelected = product.is_selected === 1
-					const hasDiscount = parseFloat(product.discount) > 0
-					const hasOriginalPrice = parseFloat(product.original_price) > 0
+        const preferred = preferredProductId;
+        const preferredExists =
+          preferred != null &&
+          products.some((p) => String(p.product_id) === String(preferred));
+        console.log(preferredExists);
+        if (preferredExists) {
+          selectedId = preferred;
+        } else {
+          const defaultProduct = products.find((p) => p.is_selected === 1);
+          selectedId = defaultProduct
+            ? defaultProduct.product_id
+            : products[0].product_id;
+        }
 
-					// 如果是默认选中的，记录下来
-					if (isSelected) {
-						selectedProduct = product
-					}
+        selectedProduct =
+          products.find((p) => String(p.product_id) === String(selectedId)) ||
+          products[0];
 
-					html += `
-                    <div class="pricing-plan ${isSelected ? 'selected recommended' : ''}" 
-                         onclick="selectPlan(this, ${product.id})"
-                         data-product-id="${product.id}">
+        products.forEach((product, index) => {
+          const isSelected = String(product.product_id) === String(selectedId);
+          const isRecommended = product.is_selected === 1;
+          const hasDiscount = parseFloat(product.discount) > 0;
+          const hasOriginalPrice = parseFloat(product.original_price) > 0;
+
+          const isSubscription = currentTab === "subscriptions";
+          const iconSrc = isSubscription
+            ? "./assets/pro-badge.png"
+            : "./assets/coin.png";
+          const itemTitle = isSubscription
+            ? product.title
+            : `${product.coins} Coins`;
+          const itemSubtitle = isSubscription
+            ? `+${product.coins} Free Diamonds ${product.vip_days >= 31 ? "/month" : ""}`
+            : product.title;
+
+          html += `
+                    <div class="pricing-plan ${isSelected ? "selected" : ""} ${isRecommended ? "recommended" : ""}" 
+                         onclick="selectPlan(this, this.getAttribute('data-product-id'))"
+                         data-product-id="${product.product_id}">
                         <div class="plan-left">
                             <div class="plan-radio"></div>
                             <div class="plan-info">
                                 <h3>
                                     <span class="coins-icon">
-                                        <img src="./assets/coin.png" alt="coins">
-                                        ${product.coins} Coins
+                                        <img src="${iconSrc}" alt="icon" onerror="this.src='./assets/coin.png'">
+                                        ${itemTitle}
                                     </span>
-                                    ${hasDiscount ? `<span class="discount-badge">-${product.discount}%</span>` : ''}
+                                    ${hasDiscount ? `<span class="discount-badge">-${product.discount}%</span>` : ""}
                                 </h3>
-                                <p>${product.title}</p>
+                                <p>${itemSubtitle}</p>
                             </div>
                         </div>
                         <div class="plan-price">
                             <div class="price">
-                                ${hasOriginalPrice ? `<span class="original-price">$${product.original_price}</span>` : ''}
-                                $${product.price}
+                                ${hasOriginalPrice ? `<span class="original-price">$${product.local_original_price}</span>` : ""}
+                                ${product.local_currency + " " + product.local_price}
                             </div>
-                            <div class="period">${product.currency}</div>
+                           
                         </div>
                     </div>
-                `
-				})
+                `;
+        });
 
-				plansContainer.innerHTML = html
+        plansContainer.innerHTML = html;
+      }
 
-				// 如果没有默认选中的，选择第一个
-				if (!selectedProduct && products.length > 0) {
-					selectedProduct = products[0]
-					const firstPlan = plansContainer.querySelector('.pricing-plan')
-					if (firstPlan) {
-						firstPlan.classList.add('selected')
-					}
-				}
-			}
+      // 价格方案选择
+      function selectPlan(planElement, productId) {
+        console.log(productId);
+        // 移除所有选中状态
+        const allPlans = document.querySelectorAll(".pricing-plan");
+        allPlans.forEach((plan) => {
+          plan.classList.remove("selected");
+        });
 
-        // 价格方案选择
-			function selectPlan(planElement, productId) {
-            // 移除所有选中状态
-            const allPlans = document.querySelectorAll('.pricing-plan')
-				allPlans.forEach((plan) => {
-                plan.classList.remove('selected')
-            })
-            
-            // 添加选中状态到当前点击的方案
-            planElement.classList.add('selected')
+        // 添加选中状态到当前点击的方案
+        planElement.classList.add("selected");
+        // 更新选中的商品
+        selectedProduct = products.find(
+          (p) => String(p.product_id) === String(productId),
+        );
+      }
 
-				// 更新选中的商品
-				selectedProduct = products.find((p) => p.id === productId)
+      // 购买按钮点击
+      function buyNow() {
+        // 检查登录状态
+        if (!LoginModal.requireLogin(doBuyNow)) {
+          return;
+        }
+        doBuyNow();
+      }
+
+      // 支付渠道相关
+      let channels = [];
+      let selectedChannel = null;
+
+      // 实际执行购买的函数 - 打开渠道选择弹窗
+      async function doBuyNow() {
+        console.log(selectedProduct);
+        if (!selectedProduct) {
+          Toast.error("Please select a plan first!");
+          return;
         }
 
-        // 购买按钮点击
-        function buyNow() {
-				// 检查登录状态
-				if (!LoginModal.requireLogin(doBuyNow)) {
-					return
-				}
-				doBuyNow()
-			}
+        // 打开渠道选择弹窗
+        openChannelModal();
+      }
 
-			// 支付渠道相关
-			let channels = []
-			let selectedChannel = null
+      // 打开支付渠道弹窗
+      async function openChannelModal() {
+        const modal = document.getElementById("channelModal");
+        const modalBody = document.getElementById("channelModalBody");
+        const productName = document.getElementById("channelProductName");
+        const productPrice = document.getElementById("channelProductPrice");
+        const payBtn = document.getElementById("channelPayBtn");
 
-			// 实际执行购买的函数 - 打开渠道选择弹窗
-			async function doBuyNow() {
-				if (!selectedProduct) {
-					Toast.error('Please select a plan first!')
-					return
-				}
+        // 重置状态
+        selectedChannel = null;
+        payBtn.disabled = true;
 
-				// 打开渠道选择弹窗
-				openChannelModal()
-			}
+        // 显示商品信息
+        const isSubscription = currentTab === "subscriptions";
+        const productTitle = isSubscription
+          ? selectedProduct.title
+          : `${selectedProduct.coins} Coins`;
+        productName.textContent = productTitle;
 
-			// 打开支付渠道弹窗
-			async function openChannelModal() {
-				const modal = document.getElementById('channelModal')
-				const modalBody = document.getElementById('channelModalBody')
-				const productName = document.getElementById('channelProductName')
-				const productPrice = document.getElementById('channelProductPrice')
-				const payBtn = document.getElementById('channelPayBtn')
+        // 更新图标
+        const productIcon = document.querySelector("#channelModalProduct img");
+        if (productIcon) {
+          productIcon.src = isSubscription
+            ? "./assets/pro-badge.png"
+            : "./assets/coin.png";
+          productIcon.onerror = function () {
+            this.src = "./assets/coin.png";
+          };
+        }
 
-				// 重置状态
-				selectedChannel = null
-				payBtn.disabled = true
+        productPrice.textContent =
+          selectedProduct.local_price != null && selectedProduct.local_currency
+            ? `${selectedProduct.local_currency} ${selectedProduct.local_price}`
+            : `$${selectedProduct.price}`;
 
-				// 显示商品信息
-				productName.textContent = `${selectedProduct.coins} Coins`
-				productPrice.textContent = `$${selectedProduct.price}`
+        // 显示弹窗
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
 
-				// 显示弹窗
-				modal.classList.add('active')
-				document.body.style.overflow = 'hidden'
-
-				// 显示加载状态
-				modalBody.innerHTML = `
+        // 显示加载状态
+        modalBody.innerHTML = `
                 <div class="channel-loading">
                     <div class="loading-spinner"></div>
                     <p>Loading payment methods...</p>
                 </div>
-            `
+            `;
 
-				try {
-					// 获取支付渠道
-					const response = await get('/pay/channels', { pid: selectedProduct.id })
-					console.log(response)
-					if (response) {
-						channels = response.items
-            } else {
-						throw new Error('Invalid response format')
-					}
+        try {
+          // 获取支付渠道
+          const response = await get("/pay/channels", {
+            pid: selectedProduct.id,
+          });
+          console.log(response);
+          if (response) {
+            channels = response.items;
+          } else {
+            throw new Error("Invalid response format");
+          }
 
-					// 渲染渠道列表
-					renderChannels()
-				} catch (error) {
-					console.error('Failed to fetch channels:', error)
-					modalBody.innerHTML = `
+          // 渲染渠道列表
+          renderChannels();
+        } catch (error) {
+          console.error("Failed to fetch channels:", error);
+          modalBody.innerHTML = `
                     <div class="pricing-error">
                         <p>😕 Failed to load payment methods</p>
                         <button onclick="openChannelModal()">Try Again</button>
                     </div>
-                `
-				}
-			}
+                `;
+        }
+      }
 
-			// 渲染支付渠道列表
-			function renderChannels() {
-				const modalBody = document.getElementById('channelModalBody')
-				const payBtn = document.getElementById('channelPayBtn')
+      // 渲染支付渠道列表
+      function renderChannels() {
+        const modalBody = document.getElementById("channelModalBody");
+        const payBtn = document.getElementById("channelPayBtn");
 
-				if (!channels || channels.length === 0) {
-					modalBody.innerHTML = `
+        if (!channels || channels.length === 0) {
+          modalBody.innerHTML = `
                     <div class="pricing-error">
                         <p>No payment methods available</p>
                     </div>
-                `
-					return
-				}
+                `;
+          return;
+        }
 
-				let html = '<div class="channel-list">'
+        let html = '<div class="channel-list">';
 
-				channels.forEach((channel, index) => {
-					const isFirst = index === 0
-					const displayName = channel.description ? `${channel.name} - ${channel.description}` : channel.name
+        channels.forEach((channel, index) => {
+          const isFirst = index === 0;
+          const displayName = channel.description
+            ? `${channel.name} - ${channel.description}`
+            : channel.name;
 
-					html += `
-                    <div class="channel-item ${isFirst ? 'selected' : ''}" onclick="selectChannel(${channel.id})" data-channel-id="${channel.id}">
+          html += `
+                    <div class="channel-item ${isFirst ? "selected" : ""}" onclick="selectChannel(${channel.id})" data-channel-id="${channel.id}">
                         <div class="channel-icon">
                             <img src="${channel.icon_url}" alt="${channel.name}" onerror="this.src='./assets/coin.png'">
                         </div>
                         <div class="channel-info">
                             <div class="channel-name">
                                 ${channel.name}
-                                ${channel.is_safe === 1 ? '<span class="channel-safe-badge">SAFE</span>' : ''}
+                                ${channel.is_safe === 1 ? '<span class="channel-safe-badge">SAFE</span>' : ""}
                             </div>
-                            ${channel.description ? `<div class="channel-desc">${channel.description}</div>` : ''}
+                            ${channel.description ? `<div class="channel-desc">${channel.description}</div>` : ""}
                         </div>
                         <div class="channel-radio"></div>
                     </div>
-                `
-				})
+                `;
+        });
 
-				html += '</div>'
-				modalBody.innerHTML = html
+        html += "</div>";
+        modalBody.innerHTML = html;
 
-				// 默认选择第一个渠道
-				if (channels.length > 0) {
-					selectedChannel = channels[0]
-					payBtn.disabled = false
-				}
-			}
+        // 默认选择第一个渠道
+        if (channels.length > 0) {
+          selectedChannel = channels[0];
+          payBtn.disabled = false;
+        }
+      }
 
-			// 选择支付渠道
-			function selectChannel(channelId) {
-				const allItems = document.querySelectorAll('.channel-item')
-				allItems.forEach((item) => item.classList.remove('selected'))
+      // 选择支付渠道
+      function selectChannel(channelId) {
+        const allItems = document.querySelectorAll(".channel-item");
+        allItems.forEach((item) => item.classList.remove("selected"));
 
-				const selectedItem = document.querySelector(`.channel-item[data-channel-id="${channelId}"]`)
-				if (selectedItem) {
-					selectedItem.classList.add('selected')
-				}
+        const selectedItem = document.querySelector(
+          `.channel-item[data-channel-id="${channelId}"]`,
+        );
+        if (selectedItem) {
+          selectedItem.classList.add("selected");
+        }
 
-				selectedChannel = channels.find((c) => c.id === channelId)
+        selectedChannel = channels.find((c) => c.id === channelId);
 
-				// 启用支付按钮
-				const payBtn = document.getElementById('channelPayBtn')
-				payBtn.disabled = false
-			}
+        // 启用支付按钮
+        const payBtn = document.getElementById("channelPayBtn");
+        payBtn.disabled = false;
+      }
 
-			// 关闭支付渠道弹窗
-			function closeChannelModal() {
-				const modal = document.getElementById('channelModal')
-				modal.classList.remove('active')
-				document.body.style.overflow = ''
-			}
+      // 关闭支付渠道弹窗
+      function closeChannelModal() {
+        const modal = document.getElementById("channelModal");
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
 
-			// 确认支付
-			async function confirmPayment() {
-				if (!selectedChannel || !selectedProduct) {
-					Toast.error('Please select a payment method')
-					return
-				}
+      // 确认支付
+      async function confirmPayment() {
+        if (!selectedChannel || !selectedProduct) {
+          Toast.error("Please select a payment method");
+          return;
+        }
 
-				const payBtn = document.getElementById('channelPayBtn')
-				payBtn.textContent = 'Processing...'
-				payBtn.disabled = true
+        const payBtn = document.getElementById("channelPayBtn");
+        payBtn.textContent = "Processing...";
+        payBtn.disabled = true;
 
-				try {
-					// 调用支付准备接口
-					const response = await get('/pay/prepare', {
-						pid: selectedProduct.id,
-						channel_id: selectedChannel.id,
-					})
+        try {
+          // 调用支付准备接口
+          const response = await get("/pay/prepare", {
+            pid: selectedProduct.id,
+            channel_id: selectedChannel.id,
+          });
 
-					// 处理支付结果
-					if (response && response.pay_link) {
-						const payLink = response.pay_link
-						const tradeSn = response.trade_sn
+          // 处理支付结果
+          if (response && response.pay_link) {
+            const payLink = response.pay_link;
+            const tradeSn = response.trade_sn;
 
-						// 保存订单号
-						if (tradeSn) {
-							localStorage.setItem('trade_sn', tradeSn)
-							sessionStorage.setItem('trade_sn', tradeSn)
-						}
+            // 保存订单号
+            if (tradeSn) {
+              localStorage.setItem("trade_sn", tradeSn);
+              sessionStorage.setItem("trade_sn", tradeSn);
+            }
 
-						// 使用 <a> 标签模拟点击来跳转，避免 Safari 拦截
-						try {
-							const a = document.createElement('a')
-							a.href = payLink
-							a.target = '_self'
-							document.body.appendChild(a)
-							a.click()
-							document.body.removeChild(a)
-						} catch (error) {
-							console.error('Failed to open payment page:', error)
-							// 备用方案：直接跳转
-							window.location.href = payLink
-						}
+            // 使用 <a> 标签模拟点击来跳转，避免 Safari 拦截
+            try {
+              const a = document.createElement("a");
+              a.href = payLink;
+              a.target = "_self";
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            } catch (error) {
+              console.error("Failed to open payment page:", error);
+              // 备用方案：直接跳转
+              window.location.href = payLink;
+            }
 
-						closeChannelModal()
-					} else {
-						Toast.error('Failed to create payment order')
-					}
-				} catch (error) {
-					console.error('Payment error:', error)
-					Toast.error(error.message || 'Payment failed, please try again')
-				} finally {
-					payBtn.textContent = 'Confirm Payment'
-					payBtn.disabled = false
-				}
-			}
+            closeChannelModal();
+          } else {
+            Toast.error("Failed to create payment order");
+          }
+        } catch (error) {
+          console.error("Payment error:", error);
+          Toast.error(error.message || "Payment failed, please try again");
+        } finally {
+          payBtn.textContent = "Confirm Payment";
+          payBtn.disabled = false;
+        }
+      }
 
-			// 点击弹窗外部关闭
-			document.addEventListener('click', function (e) {
-				const modal = document.getElementById('channelModal')
-				if (e.target === modal) {
-					closeChannelModal()
-				}
-			})
+      // 点击弹窗外部关闭
+      document.addEventListener("click", function (e) {
+        const modal = document.getElementById("channelModal");
+        if (e.target === modal) {
+          closeChannelModal();
+        }
+      });
 
-			// ESC 键关闭弹窗
-			document.addEventListener('keydown', function (e) {
-				if (e.key === 'Escape') {
-					closeChannelModal()
-				}
-			})
+      // ESC 键关闭弹窗
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeChannelModal();
+        }
+      });
 
-			// ========== 支付状态确认弹窗 ==========
-			
-			// 当前订单号
-			let currentTradeSn = null
+      // ========== 支付状态确认弹窗 ==========
 
-			// 显示支付状态弹窗
-			function showPaymentStatusModal() {
-				const modal = document.getElementById('paymentStatusModal')
-				modal.classList.add('active')
-				document.body.style.overflow = 'hidden'
-			}
+      // 当前订单号
+      let currentTradeSn = null;
 
-			// 关闭支付状态弹窗
-			function closePaymentStatusModal() {
-				const modal = document.getElementById('paymentStatusModal')
-				modal.classList.remove('active')
-				document.body.style.overflow = ''
-			}
+      // 显示支付状态弹窗
+      function showPaymentStatusModal() {
+        const modal = document.getElementById("paymentStatusModal");
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
 
-			// 处理：已购买 - 查询订单
-			async function handlePurchased() {
-				const tradeSn = localStorage.getItem('trade_sn') || sessionStorage.getItem('trade_sn')
-				if (!tradeSn) {
-					Toast.error('Order information lost')
-					closePaymentStatusModal()
-					return
-				}
+      // 关闭支付状态弹窗
+      function closePaymentStatusModal() {
+        const modal = document.getElementById("paymentStatusModal");
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
 
-				const btn = document.getElementById('btnPurchased')
-				btn.textContent = 'Checking...'
-				btn.disabled = true
+      // 处理：已购买 - 查询订单
+      async function handlePurchased() {
+        const tradeSn =
+          localStorage.getItem("trade_sn") ||
+          sessionStorage.getItem("trade_sn");
+        if (!tradeSn) {
+          Toast.error("Order information lost");
+          closePaymentStatusModal();
+          return;
+        }
 
-				// 先上报支付状态
-				try {
-					await post('/pay/report', { content: 'purchased', trade_sn: tradeSn })
-				} catch (e) {
-					console.error('Payment report failed:', e)
-				}
+        const btn = document.getElementById("btnPurchased");
+        btn.textContent = "Checking...";
+        btn.disabled = true;
 
-				// 查询订单
-				try {
-					localStorage.removeItem('trade_sn')
-					sessionStorage.removeItem('trade_sn')
-					
-					const response = await get('/pay/query', { trade_sn: tradeSn })
-					console.log('Order query response:', response)
-					
-					// 查找当前订单状态
-					let orderStatus = null
-					if (Array.isArray(response)) {
-						orderStatus = response.find(order => order.trade_sn === tradeSn)
-					} else if (response && response.trade_sn) {
-						orderStatus = response
-					}
-					
-					if (orderStatus && orderStatus.status === 1) {
-						// status === 1 means payment successful
-						closePaymentStatusModal()
-						Toast.success('Payment successful!')
-						
-						// 获取最新用户信息
-						try {
-							const userInfo = await get('/my/profile')
-							if (userInfo) {
-								localStorage.setItem('userInfo', JSON.stringify(userInfo))
-							}
-						} catch (e) {
-							console.error('Failed to refresh user info:', e)
-						}
-						
-						setTimeout(() => {
-							location.reload()
-						}, 300)
-					} else {
-						const message = orderStatus && orderStatus.message ? orderStatus.message : 'Order not confirmed, please try again later'
-						Toast.info(message)
-					}
-				} catch (error) {
-					console.error('Query order error:', error)
-					Toast.error('Query failed, please try again later')
-				} finally {
-					btn.textContent = 'Purchased'
-					btn.disabled = false
-				}
-			}
+        // 先上报支付状态
+        try {
+          await post("/pay/report", {
+            content: "purchased",
+            trade_sn: tradeSn,
+          });
+        } catch (e) {
+          console.error("Payment report failed:", e);
+        }
 
-			// 处理支付反馈上报
-			async function reportPaymentStatus(content) {
-				const tradeSn = localStorage.getItem('trade_sn') || sessionStorage.getItem('trade_sn')
-				if (!tradeSn) {
-					closePaymentStatusModal()
-					return
-				}
+        // 查询订单
+        try {
+          localStorage.removeItem("trade_sn");
+          sessionStorage.removeItem("trade_sn");
 
-				try {
-					await post('/pay/report', { content: content, trade_sn: tradeSn })
-				} catch (error) {
-					console.error('Payment report failed:', error)
-				}
-				
-				// 清除订单号
-				localStorage.removeItem('trade_sn')
-				sessionStorage.removeItem('trade_sn')
-				closePaymentStatusModal()
-			}
+          const response = await get("/pay/query", { trade_sn: tradeSn });
+          console.log("Order query response:", response);
 
-			// Handle: Too Expensive
-			async function handleTooExpensive() {
-				await reportPaymentStatus('too_expensive')
-				Toast.info('Thanks for your feedback')
-			}
+          // 查找当前订单状态
+          let orderStatus = null;
+          if (Array.isArray(response)) {
+            orderStatus = response.find((order) => order.trade_sn === tradeSn);
+          } else if (response && response.trade_sn) {
+            orderStatus = response;
+          }
 
-			// Handle: Payment Issue
-			async function handlePaymentIssue() {
-				await reportPaymentStatus('payment_issue')
-				Toast.info('Please contact support if you have any issues')
-			}
+          if (orderStatus && orderStatus.status === 1) {
+            // status === 1 means payment successful
+            closePaymentStatusModal();
+            Toast.success("Payment successful!");
 
-			// Handle: Pay Later
-			async function handlePayLater() {
-				await reportPaymentStatus('pay_later')
-				Toast.info('Looking forward to seeing you again')
-			}
+            // 获取最新用户信息
+            try {
+              const userInfo = await get("/my/profile");
+              if (userInfo) {
+                localStorage.setItem("userInfo", JSON.stringify(userInfo));
+              }
+            } catch (e) {
+              console.error("Failed to refresh user info:", e);
+            }
 
-			// 检查是否有待确认的订单
-			function checkPendingOrder() {
-				const tradeSn = localStorage.getItem('trade_sn') || sessionStorage.getItem('trade_sn')
-				if (tradeSn) {
-					currentTradeSn = tradeSn
-					// 延迟显示，让页面先加载完成
-					setTimeout(() => {
-						showPaymentStatusModal()
-					}, 500)
-				}
-			}
+            setTimeout(() => {
+              location.reload();
+            }, 300);
+          } else {
+            const message =
+              orderStatus && orderStatus.message
+                ? orderStatus.message
+                : "Order not confirmed, please try again later";
+            Toast.info(message);
+          }
+        } catch (error) {
+          console.error("Query order error:", error);
+          Toast.error("Query failed, please try again later");
+        } finally {
+          btn.textContent = "Purchased";
+          btn.disabled = false;
+        }
+      }
 
-			// 页面加载时获取商品数据并检查待确认订单
-			document.addEventListener('DOMContentLoaded', function () {
-				fetchProducts()
-				// 检查是否有待确认的订单
-				checkPendingOrder()
-        })
+      // 处理支付反馈上报
+      async function reportPaymentStatus(content) {
+        const tradeSn =
+          localStorage.getItem("trade_sn") ||
+          sessionStorage.getItem("trade_sn");
+        if (!tradeSn) {
+          closePaymentStatusModal();
+          return;
+        }
+
+        try {
+          await post("/pay/report", { content: content, trade_sn: tradeSn });
+        } catch (error) {
+          console.error("Payment report failed:", error);
+        }
+
+        // 清除订单号
+        localStorage.removeItem("trade_sn");
+        sessionStorage.removeItem("trade_sn");
+        closePaymentStatusModal();
+      }
+
+      // Handle: Too Expensive
+      async function handleTooExpensive() {
+        await reportPaymentStatus("too_expensive");
+        Toast.info("Thanks for your feedback");
+      }
+
+      // Handle: Payment Issue
+      async function handlePaymentIssue() {
+        await reportPaymentStatus("payment_issue");
+        Toast.info("Please contact support if you have any issues");
+      }
+
+      // Handle: Pay Later
+      async function handlePayLater() {
+        await reportPaymentStatus("pay_later");
+        Toast.info("Looking forward to seeing you again");
+      }
+
+      // 检查是否有待确认的订单
+      function checkPendingOrder() {
+        const tradeSn =
+          localStorage.getItem("trade_sn") ||
+          sessionStorage.getItem("trade_sn");
+        if (tradeSn) {
+          currentTradeSn = tradeSn;
+          // 延迟显示，让页面先加载完成
+          setTimeout(() => {
+            showPaymentStatusModal();
+          }, 500);
+        }
+      }
+
+      // 页面加载时获取商品数据并检查待确认订单
+      document.addEventListener("DOMContentLoaded", function () {
+        preferredProductId = getPreferredProductIdFromUrl();
+        fetchProducts();
+        // 检查是否有待确认的订单
+        checkPendingOrder();
+      });
     </script>
-</body>
+  </body>
 </html>

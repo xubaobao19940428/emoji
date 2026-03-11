@@ -989,8 +989,8 @@ const LoginModal = {
     // 检查是否已登录
     isLoggedIn: function() {
         const token = localStorage.getItem('token');
-        const userInfo = localStorage.getItem('userInfo');
-        return !!(token && userInfo);
+        // const userInfo = localStorage.getItem('userInfo');
+        return !!(token);
     },
     
     // 需要登录时的检查函数
