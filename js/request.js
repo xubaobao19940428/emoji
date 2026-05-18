@@ -118,8 +118,7 @@ class HttpClient {
         // 设置请求头
         const headers = {
             ...this.defaultHeaders,
-            'x-app-id': '1',
-            'x-app-domain': 'undressly.app'
+            'x-app-id': '1'
         };
 
         if (token) {
