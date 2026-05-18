@@ -4,7 +4,8 @@ const CONFIG = {
     API_URL: 'https://api.lovepal.net/v1', // 请根据实际情况修改
     SECRET_KEY: 'eac091c790ba144807037553a0517ff9', // 请根据实际情况修改
     TIMEOUT: 20000,
-    VERSION: '1.0.0'
+    VERSION: '1.0.0',
+    APP_DOMAIN: 'lovepal.me'
 };
 
 // 工具函数
@@ -50,6 +51,17 @@ const utils = {
             }
             return Math.abs(hash).toString(16).padStart(32, '0');
         }
+    },
+
+    // 和 love-pal-front 一致：签名参数忽略 undefined/null
+    removeEmptySignParams: function(params = {}) {
+        return Object.keys(params).reduce((acc, key) => {
+            const value = params[key];
+            if (value !== undefined && value !== null) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {});
     }
 };
 
@@ -60,6 +72,7 @@ class HttpClient {
         this.timeout = CONFIG.TIMEOUT;
         this.defaultHeaders = {
             'Content-Type': 'application/json',
+            'Accept': 'application/json, text/plain, */*',
             'x-app-version': CONFIG.VERSION,
             'x-app-timezone': utils.getTimeZone(),
         };
@@ -84,11 +97,13 @@ class HttpClient {
             });
         }
 
+        // 准备签名参数：POST 用 data，GET 用 params，和 love-pal-front 保持一致
+        const requestParams = utils.removeEmptySignParams(options.data || options.params || {});
+
         // 合并所有参数
         const allParams = {
-            ...urlParams,
-            ...(options.params || {}),
-            ...(options.data || {}),
+            ...utils.removeEmptySignParams(urlParams),
+            ...requestParams,
             timestamp,
             nonce
         };
@@ -118,7 +133,8 @@ class HttpClient {
         // 设置请求头
         const headers = {
             ...this.defaultHeaders,
-            'x-app-id': '1'
+            'x-app-id': 1,
+            'x-app-domain': CONFIG.APP_DOMAIN
         };
 
         if (token) {
@@ -127,12 +143,28 @@ class HttpClient {
 
         // 构建最终URL
         const finalUrl = this.baseURL + baseUrl + '?' + new URLSearchParams({
-            ...urlParams,
-            ...(options.params || {}),
+            ...utils.removeEmptySignParams(urlParams),
+            ...utils.removeEmptySignParams(options.params || {}),
             timestamp,
             nonce,
             sign
         }).toString();
+
+        if (localStorage.getItem('debug_sign') === '1') {
+            console.log('[request sign debug]', {
+                method: options.method || 'GET',
+                baseUrl,
+                encodedFullPath,
+                signParams: sortedParams,
+                queryString,
+                secretKey: CONFIG.SECRET_KEY,
+                signSource: encodedFullPath + queryString + CONFIG.SECRET_KEY,
+                sign,
+                finalUrl,
+                headers,
+                body: options.data || null
+            });
+        }
 
         return {
             url: finalUrl,
